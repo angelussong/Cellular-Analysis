@@ -1,0 +1,1026 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<neuroml xmlns="http://morphml.org/neuroml/schema"
+    xmlns:mml="http://morphml.org/morphml/schema"
+    xmlns:meta="http://morphml.org/metadata/schema"
+    xmlns:bio="http://morphml.org/biophysics/schema"
+    xmlns:cml="http://morphml.org/channelml/schema"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://morphml.org/neuroml/schema http://www.neuroml.org/NeuroMLValidator/NeuroMLFiles/Schemata/v1.8.1/Level3/NeuroML_Level3_v1.8.1.xsd"
+    name = "NeuroML Level 2 file exported from NEURON"
+    lengthUnits="micron">
+
+<meta:notes>NeuroML Level 2 file generated from ModelView by: NEURON -- VERSION 7.5 master (643b6f9) 2018-04-27
+Authors: Michael Hines, Sushil Kambampati and Padraig Gleeson,
+Yale University and UCL</meta:notes>
+
+<cells>
+  <cell name="d2msn_0">
+    <meta:notes>Cell: d2msn_0 exported from NEURON ModelView</meta:notes>
+    <segments  xmlns="http://morphml.org/morphml/schema"> <!-- Changing the namespace from neuroml to morphml-->
+<!-- Section: d2msn[0].soma[0] which has 2 3D points, so 1 segment(s)-->
+      <segment id="0" name = "Seg0_soma_0" cable = "0">
+        <proximal x="0" y="0" z="0" diameter="9.5896"/>
+        <distal x="10.4941" y="0" z="0" diameter="9.5896"/>
+      </segment>
+<!-- Section: d2msn[0].dend6 which has 2 3D points, so 1 segment(s)-->
+      <segment id="31" name = "Seg0_dend6" parent="0" cable = "30">  <!-- Connected at 0 on parent section: d2msn[0].soma[0]  -->
+        <proximal x="0" y="0" z="0" diameter="1.29336"/>
+        <distal x="-23.7905" y="0" z="0" diameter="1.29336"/>
+      </segment>
+<!-- Section: d2msn[0].dend4 which has 2 3D points, so 1 segment(s)-->
+      <segment id="5" name = "Seg0_dend4" parent="0" cable = "4">  <!-- Connected at 0 on parent section: d2msn[0].soma[0]  -->
+        <proximal x="0" y="0" z="0" diameter="1.29336"/>
+        <distal x="-16.5349" y="17.1051" z="0" diameter="1.29336"/>
+      </segment>
+<!-- Section: d2msn[0].dend3 which has 2 3D points, so 1 segment(s)-->
+      <segment id="4" name = "Seg0_dend3" parent="0" cable = "3">  <!-- Connected at 0 on parent section: d2msn[0].soma[0]  -->
+        <proximal x="0" y="0" z="0" diameter="1.29336"/>
+        <distal x="-16.8224" y="-16.8224" z="0" diameter="1.29336"/>
+      </segment>
+<!-- Section: d2msn[0].axon[0] which has 3 3D points, so 2 segment(s)-->
+      <segment id="46" name = "Seg0_axon_0" parent="0" cable = "45">  <!-- Connected at 0.5 on parent section: d2msn[0].soma[0]  -->
+        <proximal x="5.24705" y="0" z="0" diameter="1.1875"/>
+        <distal x="5.24705" y="10" z="0" diameter="1.1875"/>
+      </segment>
+      <segment id="47" name = "Seg1_axon_0" parent="46" cable = "45">
+        <distal x="5.24705" y="20" z="0" diameter="1.1875"/>
+      </segment>
+<!-- Section: d2msn[0].dend5 which has 2 3D points, so 1 segment(s)-->
+      <segment id="30" name = "Seg0_dend5" parent="0" cable = "29">  <!-- Parent section: d2msn[0].soma[0] -->
+        <proximal x="10.4941" y="0" z="0" diameter="1.29336"/>
+        <distal x="34.2846" y="0" z="0" diameter="1.29336"/>
+      </segment>
+<!-- Section: d2msn[0].dend2 which has 2 3D points, so 1 segment(s)-->
+      <segment id="3" name = "Seg0_dend2" parent="0" cable = "2">  <!-- Parent section: d2msn[0].soma[0] -->
+        <proximal x="10.4941" y="0" z="0" diameter="1.29336"/>
+        <distal x="27.3165" y="16.8224" z="0" diameter="1.29336"/>
+      </segment>
+<!-- Section: d2msn[0].dend1 which has 2 3D points, so 1 segment(s)-->
+      <segment id="2" name = "Seg0_dend1" parent="0" cable = "1">  <!-- Parent section: d2msn[0].soma[0] -->
+        <proximal x="10.4941" y="0" z="0" diameter="1.29336"/>
+        <distal x="27.5992" y="-16.5349" z="0" diameter="1.29336"/>
+      </segment>
+<!-- Section: d2msn[0].dend6_2[0] which has 2 3D points, so 1 segment(s)-->
+      <segment id="42" name = "Seg0_dend6_2_0" parent="31" cable = "41">  <!-- Parent section: d2msn[0].dend6 -->
+        <proximal x="-23.7905" y="0" z="0" diameter="1.27444"/>
+        <distal x="-47.8025" y="-12.006" z="0" diameter="1.27444"/>
+      </segment>
+<!-- Section: d2msn[0].dend6_1[0] which has 2 3D points, so 1 segment(s)-->
+      <segment id="35" name = "Seg0_dend6_1_0" parent="31" cable = "34">  <!-- Parent section: d2msn[0].dend6 -->
+        <proximal x="-23.7905" y="0" z="0" diameter="1.27444"/>
+        <distal x="-47.8025" y="12.006" z="0" diameter="1.27444"/>
+      </segment>
+<!-- Section: d2msn[0].dend4_2[0] which has 2 3D points, so 1 segment(s)-->
+      <segment id="21" name = "Seg0_dend4_2_0" parent="5" cable = "20">  <!-- Parent section: d2msn[0].dend4 -->
+        <proximal x="-16.5349" y="17.1051" z="0" diameter="1.27444"/>
+        <distal x="-43.3811" y="17.1051" z="0" diameter="1.27444"/>
+      </segment>
+<!-- Section: d2msn[0].dend4_1[0] which has 2 3D points, so 1 segment(s)-->
+      <segment id="18" name = "Seg0_dend4_1_0" parent="5" cable = "17">  <!-- Parent section: d2msn[0].dend4 -->
+        <proximal x="-16.5349" y="17.1051" z="0" diameter="1.27444"/>
+        <distal x="-25.0244" y="42.5736" z="0" diameter="1.27444"/>
+      </segment>
+<!-- Section: d2msn[0].dend3_1[0] which has 2 3D points, so 1 segment(s)-->
+      <segment id="27" name = "Seg0_dend3_1_0" parent="4" cable = "26">  <!-- Parent section: d2msn[0].dend3 -->
+        <proximal x="-16.8224" y="-16.8224" z="0" diameter="1.27444"/>
+        <distal x="-28.8284" y="-40.8344" z="0" diameter="1.27444"/>
+      </segment>
+<!-- Section: d2msn[0].dend3_2[0] which has 2 3D points, so 1 segment(s)-->
+      <segment id="24" name = "Seg0_dend3_2_0" parent="4" cable = "23">  <!-- Parent section: d2msn[0].dend3 -->
+        <proximal x="-16.8224" y="-16.8224" z="0" diameter="1.27444"/>
+        <distal x="-43.6686" y="-16.8224" z="0" diameter="1.27444"/>
+      </segment>
+<!-- Section: d2msn[0].axon[1] which has 3 3D points, so 2 segment(s)-->
+      <segment id="48" name = "Seg0_axon_1" parent="47" cable = "46">  <!-- Parent section: d2msn[0].axon[0] -->
+        <proximal x="5.24705" y="20" z="0" diameter="0.6875"/>
+        <distal x="5.24705" y="35" z="0" diameter="0.6875"/>
+      </segment>
+      <segment id="49" name = "Seg1_axon_1" parent="48" cable = "46">
+        <distal x="5.24705" y="50" z="0" diameter="0.6875"/>
+      </segment>
+<!-- Section: d2msn[0].dend5_2[0] which has 2 3D points, so 1 segment(s)-->
+      <segment id="39" name = "Seg0_dend5_2_0" parent="30" cable = "38">  <!-- Parent section: d2msn[0].dend5 -->
+        <proximal x="34.2846" y="0" z="0" diameter="1.27444"/>
+        <distal x="58.2966" y="-12.006" z="0" diameter="1.27444"/>
+      </segment>
+<!-- Section: d2msn[0].dend5_1[0] which has 2 3D points, so 1 segment(s)-->
+      <segment id="32" name = "Seg0_dend5_1_0" parent="30" cable = "31">  <!-- Parent section: d2msn[0].dend5 -->
+        <proximal x="34.2846" y="0" z="0" diameter="1.27444"/>
+        <distal x="58.2966" y="12.006" z="0" diameter="1.27444"/>
+      </segment>
+<!-- Section: d2msn[0].dend2_2[0] which has 2 3D points, so 1 segment(s)-->
+      <segment id="15" name = "Seg0_dend2_2_0" parent="3" cable = "14">  <!-- Parent section: d2msn[0].dend2 -->
+        <proximal x="27.3165" y="16.8224" z="0" diameter="1.27444"/>
+        <distal x="35.806" y="42.291" z="0" diameter="1.27444"/>
+      </segment>
+<!-- Section: d2msn[0].dend2_1[0] which has 2 3D points, so 1 segment(s)-->
+      <segment id="12" name = "Seg0_dend2_1_0" parent="3" cable = "11">  <!-- Parent section: d2msn[0].dend2 -->
+        <proximal x="27.3165" y="16.8224" z="0" diameter="1.27444"/>
+        <distal x="54.1627" y="16.8224" z="0" diameter="1.27444"/>
+      </segment>
+<!-- Section: d2msn[0].dend1_2[0] which has 2 3D points, so 1 segment(s)-->
+      <segment id="9" name = "Seg0_dend1_2_0" parent="2" cable = "8">  <!-- Parent section: d2msn[0].dend1 -->
+        <proximal x="27.5992" y="-16.5349" z="0" diameter="1.27444"/>
+        <distal x="54.4454" y="-16.5349" z="0" diameter="1.27444"/>
+      </segment>
+<!-- Section: d2msn[0].dend1_1[0] which has 2 3D points, so 1 segment(s)-->
+      <segment id="6" name = "Seg0_dend1_1_0" parent="2" cable = "5">  <!-- Parent section: d2msn[0].dend1 -->
+        <proximal x="27.5992" y="-16.5349" z="0" diameter="1.27444"/>
+        <distal x="27.5992" y="-43.3811" z="0" diameter="1.27444"/>
+      </segment>
+<!-- Section: d2msn[0].dend6_2[3] which has 2 3D points, so 1 segment(s)-->
+      <segment id="45" name = "Seg0_dend6_2_3" parent="41" cable = "44">  <!-- Connected at 0.8 on parent section: d2msn[0].dend6_2[0]  -->
+        <proximal x="-43.0001" y="-9.60478" z="0" diameter="0.908306"/>
+        <distal x="-125.375" y="-91.9797" z="0" diameter="0.908306"/>
+      </segment>
+<!-- Section: d2msn[0].dend6_2[2] which has 2 3D points, so 1 segment(s)-->
+      <segment id="44" name = "Seg0_dend6_2_2" parent="42" cable = "43">  <!-- Parent section: d2msn[0].dend6_2[0] -->
+        <proximal x="-47.8025" y="-12.006" z="0" diameter="0.908306"/>
+        <distal x="-139.543" y="-83.8033" z="0" diameter="0.908306"/>
+      </segment>
+<!-- Section: d2msn[0].dend6_2[1] which has 2 3D points, so 1 segment(s)-->
+      <segment id="43" name = "Seg0_dend6_2_1" parent="42" cable = "42">  <!-- Parent section: d2msn[0].dend6_2[0] -->
+        <proximal x="-47.8025" y="-12.006" z="0" diameter="0.908306"/>
+        <distal x="-151.086" y="-65.893" z="0" diameter="0.908306"/>
+      </segment>
+<!-- Section: d2msn[0].dend6_1[3] which has 2 3D points, so 1 segment(s)-->
+      <segment id="38" name = "Seg0_dend6_1_3" parent="34" cable = "37">  <!-- Connected at 0.8 on parent section: d2msn[0].dend6_1[0]  -->
+        <proximal x="-43.0001" y="9.60478" z="0" diameter="0.908306"/>
+        <distal x="-125.375" y="91.9797" z="0" diameter="0.908306"/>
+      </segment>
+<!-- Section: d2msn[0].dend6_1[2] which has 2 3D points, so 1 segment(s)-->
+      <segment id="37" name = "Seg0_dend6_1_2" parent="35" cable = "36">  <!-- Parent section: d2msn[0].dend6_1[0] -->
+        <proximal x="-47.8025" y="12.006" z="0" diameter="0.908306"/>
+        <distal x="-130.177" y="94.3809" z="0" diameter="0.908306"/>
+      </segment>
+<!-- Section: d2msn[0].dend6_1[1] which has 2 3D points, so 1 segment(s)-->
+      <segment id="36" name = "Seg0_dend6_1_1" parent="35" cable = "35">  <!-- Parent section: d2msn[0].dend6_1[0] -->
+        <proximal x="-47.8025" y="12.006" z="0" diameter="0.908306"/>
+        <distal x="-163.32" y="27.0735" z="0" diameter="0.908306"/>
+      </segment>
+<!-- Section: d2msn[0].dend4_2[2] which has 2 3D points, so 1 segment(s)-->
+      <segment id="23" name = "Seg0_dend4_2_2" parent="21" cable = "22">  <!-- Parent section: d2msn[0].dend4_2[0] -->
+        <proximal x="-43.3811" y="17.1051" z="0" diameter="0.908306"/>
+        <distal x="-147.578" y="-34.9934" z="0" diameter="0.908306"/>
+      </segment>
+<!-- Section: d2msn[0].dend4_2[1] which has 2 3D points, so 1 segment(s)-->
+      <segment id="22" name = "Seg0_dend4_2_1" parent="21" cable = "21">  <!-- Parent section: d2msn[0].dend4_2[0] -->
+        <proximal x="-43.3811" y="17.1051" z="0" diameter="0.908306"/>
+        <distal x="-95.4796" y="121.302" z="0" diameter="0.908306"/>
+      </segment>
+<!-- Section: d2msn[0].dend4_1[2] which has 2 3D points, so 1 segment(s)-->
+      <segment id="20" name = "Seg0_dend4_1_2" parent="18" cable = "19">  <!-- Parent section: d2msn[0].dend4_1[0] -->
+        <proximal x="-25.0244" y="42.5736" z="0" diameter="0.908306"/>
+        <distal x="-129.221" y="94.6721" z="0" diameter="0.908306"/>
+      </segment>
+<!-- Section: d2msn[0].dend4_1[1] which has 2 3D points, so 1 segment(s)-->
+      <segment id="19" name = "Seg0_dend4_1_1" parent="18" cable = "18">  <!-- Parent section: d2msn[0].dend4_1[0] -->
+        <proximal x="-25.0244" y="42.5736" z="0" diameter="0.908306"/>
+        <distal x="57.3505" y="124.949" z="0" diameter="0.908306"/>
+      </segment>
+<!-- Section: d2msn[0].dend3_1[2] which has 2 3D points, so 1 segment(s)-->
+      <segment id="29" name = "Seg0_dend3_1_2" parent="27" cable = "28">  <!-- Parent section: d2msn[0].dend3_1[0] -->
+        <proximal x="-28.8284" y="-40.8344" z="0" diameter="0.908306"/>
+        <distal x="-139.346" y="-77.6736" z="0" diameter="0.908306"/>
+      </segment>
+<!-- Section: d2msn[0].dend3_1[1] which has 2 3D points, so 1 segment(s)-->
+      <segment id="28" name = "Seg0_dend3_1_1" parent="27" cable = "27">  <!-- Parent section: d2msn[0].dend3_1[0] -->
+        <proximal x="-28.8284" y="-40.8344" z="0" diameter="0.908306"/>
+        <distal x="23.2701" y="-145.031" z="0" diameter="0.908306"/>
+      </segment>
+<!-- Section: d2msn[0].dend3_2[2] which has 2 3D points, so 1 segment(s)-->
+      <segment id="26" name = "Seg0_dend3_2_2" parent="24" cable = "25">  <!-- Parent section: d2msn[0].dend3_2[0] -->
+        <proximal x="-43.6686" y="-16.8224" z="0" diameter="0.908306"/>
+        <distal x="-126.044" y="-99.1974" z="0" diameter="0.908306"/>
+      </segment>
+<!-- Section: d2msn[0].dend3_2[1] which has 2 3D points, so 1 segment(s)-->
+      <segment id="25" name = "Seg0_dend3_2_1" parent="24" cable = "24">  <!-- Parent section: d2msn[0].dend3_2[0] -->
+        <proximal x="-43.6686" y="-16.8224" z="0" diameter="0.908306"/>
+        <distal x="-147.866" y="35.2761" z="0" diameter="0.908306"/>
+      </segment>
+<!-- Section: d2msn[0].axon[2] which has 3 3D points, so 2 segment(s)-->
+      <segment id="50" name = "Seg0_axon_2" parent="49" cable = "47">  <!-- Parent section: d2msn[0].axon[1] -->
+        <proximal x="5.24705" y="50" z="0" diameter="0.5"/>
+        <distal x="5.24704" y="250" z="0" diameter="0.5"/>
+      </segment>
+      <segment id="51" name = "Seg1_axon_2" parent="50" cable = "47">
+        <distal x="5.24703" y="450" z="0" diameter="0.5"/>
+      </segment>
+<!-- Section: d2msn[0].dend5_2[2] which has 2 3D points, so 1 segment(s)-->
+      <segment id="41" name = "Seg0_dend5_2_2" parent="39" cable = "40">  <!-- Parent section: d2msn[0].dend5_2[0] -->
+        <proximal x="58.2966" y="-12.006" z="0" diameter="0.908306"/>
+        <distal x="140.672" y="-94.3809" z="0" diameter="0.908306"/>
+      </segment>
+<!-- Section: d2msn[0].dend5_2[1] which has 2 3D points, so 1 segment(s)-->
+      <segment id="40" name = "Seg0_dend5_2_1" parent="39" cable = "39">  <!-- Parent section: d2msn[0].dend5_2[0] -->
+        <proximal x="58.2966" y="-12.006" z="0" diameter="0.908306"/>
+        <distal x="174.792" y="-12.006" z="0" diameter="0.908306"/>
+      </segment>
+<!-- Section: d2msn[0].dend5_1[2] which has 2 3D points, so 1 segment(s)-->
+      <segment id="34" name = "Seg0_dend5_1_2" parent="32" cable = "33">  <!-- Parent section: d2msn[0].dend5_1[0] -->
+        <proximal x="58.2966" y="12.006" z="0" diameter="0.908306"/>
+        <distal x="140.672" y="94.3809" z="0" diameter="0.908306"/>
+      </segment>
+<!-- Section: d2msn[0].dend5_1[1] which has 2 3D points, so 1 segment(s)-->
+      <segment id="33" name = "Seg0_dend5_1_1" parent="32" cable = "32">  <!-- Parent section: d2msn[0].dend5_1[0] -->
+        <proximal x="58.2966" y="12.006" z="0" diameter="0.908306"/>
+        <distal x="174.792" y="12.006" z="0" diameter="0.908306"/>
+      </segment>
+<!-- Section: d2msn[0].dend2_2[2] which has 2 3D points, so 1 segment(s)-->
+      <segment id="17" name = "Seg0_dend2_2_2" parent="15" cable = "16">  <!-- Parent section: d2msn[0].dend2_2[0] -->
+        <proximal x="35.806" y="42.291" z="0" diameter="0.908306"/>
+        <distal x="-16.2925" y="146.488" z="0" diameter="0.908306"/>
+      </segment>
+<!-- Section: d2msn[0].dend2_2[1] which has 2 3D points, so 1 segment(s)-->
+      <segment id="16" name = "Seg0_dend2_2_1" parent="15" cable = "15">  <!-- Parent section: d2msn[0].dend2_2[0] -->
+        <proximal x="35.806" y="42.291" z="0" diameter="0.908306"/>
+        <distal x="140.003" y="94.3895" z="0" diameter="0.908306"/>
+      </segment>
+<!-- Section: d2msn[0].dend2_1[2] which has 2 3D points, so 1 segment(s)-->
+      <segment id="14" name = "Seg0_dend2_1_2" parent="12" cable = "13">  <!-- Parent section: d2msn[0].dend2_1[0] -->
+        <proximal x="54.1627" y="16.8224" z="0" diameter="0.908306"/>
+        <distal x="106.261" y="121.019" z="0" diameter="0.908306"/>
+      </segment>
+<!-- Section: d2msn[0].dend2_1[1] which has 2 3D points, so 1 segment(s)-->
+      <segment id="13" name = "Seg0_dend2_1_1" parent="12" cable = "12">  <!-- Parent section: d2msn[0].dend2_1[0] -->
+        <proximal x="54.1627" y="16.8224" z="0" diameter="0.908306"/>
+        <distal x="158.36" y="-35.2761" z="0" diameter="0.908306"/>
+      </segment>
+<!-- Section: d2msn[0].dend1_2[2] which has 2 3D points, so 1 segment(s)-->
+      <segment id="11" name = "Seg0_dend1_2_2" parent="9" cable = "10">  <!-- Parent section: d2msn[0].dend1_2[0] -->
+        <proximal x="54.4454" y="-16.5349" z="0" diameter="0.908306"/>
+        <distal x="136.82" y="-98.9099" z="0" diameter="0.908306"/>
+      </segment>
+<!-- Section: d2msn[0].dend1_2[1] which has 2 3D points, so 1 segment(s)-->
+      <segment id="10" name = "Seg0_dend1_2_1" parent="9" cable = "9">  <!-- Parent section: d2msn[0].dend1_2[0] -->
+        <proximal x="54.4454" y="-16.5349" z="0" diameter="0.908306"/>
+        <distal x="158.642" y="35.5636" z="0" diameter="0.908306"/>
+      </segment>
+<!-- Section: d2msn[0].dend1_1[2] which has 2 3D points, so 1 segment(s)-->
+      <segment id="8" name = "Seg0_dend1_1_2" parent="6" cable = "7">  <!-- Parent section: d2msn[0].dend1_1[0] -->
+        <proximal x="27.5992" y="-43.3811" z="0" diameter="0.908306"/>
+        <distal x="131.796" y="-95.4796" z="0" diameter="0.908306"/>
+      </segment>
+<!-- Section: d2msn[0].dend1_1[1] which has 2 3D points, so 1 segment(s)-->
+      <segment id="7" name = "Seg0_dend1_1_1" parent="6" cable = "6">  <!-- Parent section: d2msn[0].dend1_1[0] -->
+        <proximal x="27.5992" y="-43.3811" z="0" diameter="0.908306"/>
+        <distal x="-24.4993" y="-147.578" z="0" diameter="0.908306"/>
+      </segment>
+    </segments>
+    <cables  xmlns="http://morphml.org/morphml/schema"> <!-- Changing namespace from neuroml to morphml-->
+      <cable id = "0" name = "soma_0" fract_along_parent = "0"/>
+      <cable id = "30" name = "dend6" fract_along_parent = "0"/>
+      <cable id = "4" name = "dend4" fract_along_parent = "0"/>
+      <cable id = "3" name = "dend3" fract_along_parent = "0"/>
+      <cable id = "45" name = "axon_0" fract_along_parent = "0.5"/>
+      <cable id = "29" name = "dend5"/>
+      <cable id = "2" name = "dend2"/>
+      <cable id = "1" name = "dend1"/>
+      <cable id = "41" name = "dend6_2_0"/>
+      <cable id = "34" name = "dend6_1_0"/>
+      <cable id = "20" name = "dend4_2_0"/>
+      <cable id = "17" name = "dend4_1_0"/>
+      <cable id = "26" name = "dend3_1_0"/>
+      <cable id = "23" name = "dend3_2_0"/>
+      <cable id = "46" name = "axon_1"/>
+      <cable id = "38" name = "dend5_2_0"/>
+      <cable id = "31" name = "dend5_1_0"/>
+      <cable id = "14" name = "dend2_2_0"/>
+      <cable id = "11" name = "dend2_1_0"/>
+      <cable id = "8" name = "dend1_2_0"/>
+      <cable id = "5" name = "dend1_1_0"/>
+      <cable id = "44" name = "dend6_2_3" fract_along_parent = "0.8">
+        <meta:properties>
+          <meta:property>
+            <meta:tag>numberInternalDivisions</meta:tag> <!-- Discetization of model at time of export. Can be overridden by importing application-->
+            <meta:value>3</meta:value>
+          </meta:property>
+        </meta:properties>
+      </cable>
+      <cable id = "43" name = "dend6_2_2">
+        <meta:properties>
+          <meta:property>
+            <meta:tag>numberInternalDivisions</meta:tag> <!-- Discetization of model at time of export. Can be overridden by importing application-->
+            <meta:value>3</meta:value>
+          </meta:property>
+        </meta:properties>
+      </cable>
+      <cable id = "42" name = "dend6_2_1">
+        <meta:properties>
+          <meta:property>
+            <meta:tag>numberInternalDivisions</meta:tag> <!-- Discetization of model at time of export. Can be overridden by importing application-->
+            <meta:value>3</meta:value>
+          </meta:property>
+        </meta:properties>
+      </cable>
+      <cable id = "37" name = "dend6_1_3" fract_along_parent = "0.8">
+        <meta:properties>
+          <meta:property>
+            <meta:tag>numberInternalDivisions</meta:tag> <!-- Discetization of model at time of export. Can be overridden by importing application-->
+            <meta:value>3</meta:value>
+          </meta:property>
+        </meta:properties>
+      </cable>
+      <cable id = "36" name = "dend6_1_2">
+        <meta:properties>
+          <meta:property>
+            <meta:tag>numberInternalDivisions</meta:tag> <!-- Discetization of model at time of export. Can be overridden by importing application-->
+            <meta:value>3</meta:value>
+          </meta:property>
+        </meta:properties>
+      </cable>
+      <cable id = "35" name = "dend6_1_1">
+        <meta:properties>
+          <meta:property>
+            <meta:tag>numberInternalDivisions</meta:tag> <!-- Discetization of model at time of export. Can be overridden by importing application-->
+            <meta:value>3</meta:value>
+          </meta:property>
+        </meta:properties>
+      </cable>
+      <cable id = "22" name = "dend4_2_2">
+        <meta:properties>
+          <meta:property>
+            <meta:tag>numberInternalDivisions</meta:tag> <!-- Discetization of model at time of export. Can be overridden by importing application-->
+            <meta:value>3</meta:value>
+          </meta:property>
+        </meta:properties>
+      </cable>
+      <cable id = "21" name = "dend4_2_1">
+        <meta:properties>
+          <meta:property>
+            <meta:tag>numberInternalDivisions</meta:tag> <!-- Discetization of model at time of export. Can be overridden by importing application-->
+            <meta:value>3</meta:value>
+          </meta:property>
+        </meta:properties>
+      </cable>
+      <cable id = "19" name = "dend4_1_2">
+        <meta:properties>
+          <meta:property>
+            <meta:tag>numberInternalDivisions</meta:tag> <!-- Discetization of model at time of export. Can be overridden by importing application-->
+            <meta:value>3</meta:value>
+          </meta:property>
+        </meta:properties>
+      </cable>
+      <cable id = "18" name = "dend4_1_1">
+        <meta:properties>
+          <meta:property>
+            <meta:tag>numberInternalDivisions</meta:tag> <!-- Discetization of model at time of export. Can be overridden by importing application-->
+            <meta:value>3</meta:value>
+          </meta:property>
+        </meta:properties>
+      </cable>
+      <cable id = "28" name = "dend3_1_2">
+        <meta:properties>
+          <meta:property>
+            <meta:tag>numberInternalDivisions</meta:tag> <!-- Discetization of model at time of export. Can be overridden by importing application-->
+            <meta:value>3</meta:value>
+          </meta:property>
+        </meta:properties>
+      </cable>
+      <cable id = "27" name = "dend3_1_1">
+        <meta:properties>
+          <meta:property>
+            <meta:tag>numberInternalDivisions</meta:tag> <!-- Discetization of model at time of export. Can be overridden by importing application-->
+            <meta:value>3</meta:value>
+          </meta:property>
+        </meta:properties>
+      </cable>
+      <cable id = "25" name = "dend3_2_2">
+        <meta:properties>
+          <meta:property>
+            <meta:tag>numberInternalDivisions</meta:tag> <!-- Discetization of model at time of export. Can be overridden by importing application-->
+            <meta:value>3</meta:value>
+          </meta:property>
+        </meta:properties>
+      </cable>
+      <cable id = "24" name = "dend3_2_1">
+        <meta:properties>
+          <meta:property>
+            <meta:tag>numberInternalDivisions</meta:tag> <!-- Discetization of model at time of export. Can be overridden by importing application-->
+            <meta:value>3</meta:value>
+          </meta:property>
+        </meta:properties>
+      </cable>
+      <cable id = "47" name = "axon_2"/>
+      <cable id = "40" name = "dend5_2_2">
+        <meta:properties>
+          <meta:property>
+            <meta:tag>numberInternalDivisions</meta:tag> <!-- Discetization of model at time of export. Can be overridden by importing application-->
+            <meta:value>3</meta:value>
+          </meta:property>
+        </meta:properties>
+      </cable>
+      <cable id = "39" name = "dend5_2_1">
+        <meta:properties>
+          <meta:property>
+            <meta:tag>numberInternalDivisions</meta:tag> <!-- Discetization of model at time of export. Can be overridden by importing application-->
+            <meta:value>3</meta:value>
+          </meta:property>
+        </meta:properties>
+      </cable>
+      <cable id = "33" name = "dend5_1_2">
+        <meta:properties>
+          <meta:property>
+            <meta:tag>numberInternalDivisions</meta:tag> <!-- Discetization of model at time of export. Can be overridden by importing application-->
+            <meta:value>3</meta:value>
+          </meta:property>
+        </meta:properties>
+      </cable>
+      <cable id = "32" name = "dend5_1_1">
+        <meta:properties>
+          <meta:property>
+            <meta:tag>numberInternalDivisions</meta:tag> <!-- Discetization of model at time of export. Can be overridden by importing application-->
+            <meta:value>3</meta:value>
+          </meta:property>
+        </meta:properties>
+      </cable>
+      <cable id = "16" name = "dend2_2_2">
+        <meta:properties>
+          <meta:property>
+            <meta:tag>numberInternalDivisions</meta:tag> <!-- Discetization of model at time of export. Can be overridden by importing application-->
+            <meta:value>3</meta:value>
+          </meta:property>
+        </meta:properties>
+      </cable>
+      <cable id = "15" name = "dend2_2_1">
+        <meta:properties>
+          <meta:property>
+            <meta:tag>numberInternalDivisions</meta:tag> <!-- Discetization of model at time of export. Can be overridden by importing application-->
+            <meta:value>3</meta:value>
+          </meta:property>
+        </meta:properties>
+      </cable>
+      <cable id = "13" name = "dend2_1_2">
+        <meta:properties>
+          <meta:property>
+            <meta:tag>numberInternalDivisions</meta:tag> <!-- Discetization of model at time of export. Can be overridden by importing application-->
+            <meta:value>3</meta:value>
+          </meta:property>
+        </meta:properties>
+      </cable>
+      <cable id = "12" name = "dend2_1_1">
+        <meta:properties>
+          <meta:property>
+            <meta:tag>numberInternalDivisions</meta:tag> <!-- Discetization of model at time of export. Can be overridden by importing application-->
+            <meta:value>3</meta:value>
+          </meta:property>
+        </meta:properties>
+      </cable>
+      <cable id = "10" name = "dend1_2_2">
+        <meta:properties>
+          <meta:property>
+            <meta:tag>numberInternalDivisions</meta:tag> <!-- Discetization of model at time of export. Can be overridden by importing application-->
+            <meta:value>3</meta:value>
+          </meta:property>
+        </meta:properties>
+      </cable>
+      <cable id = "9" name = "dend1_2_1">
+        <meta:properties>
+          <meta:property>
+            <meta:tag>numberInternalDivisions</meta:tag> <!-- Discetization of model at time of export. Can be overridden by importing application-->
+            <meta:value>3</meta:value>
+          </meta:property>
+        </meta:properties>
+      </cable>
+      <cable id = "7" name = "dend1_1_2">
+        <meta:properties>
+          <meta:property>
+            <meta:tag>numberInternalDivisions</meta:tag> <!-- Discetization of model at time of export. Can be overridden by importing application-->
+            <meta:value>3</meta:value>
+          </meta:property>
+        </meta:properties>
+      </cable>
+      <cable id = "6" name = "dend1_1_1">
+        <meta:properties>
+          <meta:property>
+            <meta:tag>numberInternalDivisions</meta:tag> <!-- Discetization of model at time of export. Can be overridden by importing application-->
+            <meta:value>3</meta:value>
+          </meta:property>
+        </meta:properties>
+      </cable>
+      <cablegroup name="ModelViewParmSubset_0"> 
+        <cable id = "0"/>
+        <cable id = "30"/>
+        <cable id = "4"/>
+        <cable id = "3"/>
+        <cable id = "45"/>
+        <cable id = "29"/>
+        <cable id = "2"/>
+        <cable id = "1"/>
+        <cable id = "41"/>
+        <cable id = "34"/>
+        <cable id = "20"/>
+        <cable id = "17"/>
+        <cable id = "26"/>
+        <cable id = "23"/>
+        <cable id = "46"/>
+        <cable id = "38"/>
+        <cable id = "31"/>
+        <cable id = "14"/>
+        <cable id = "11"/>
+        <cable id = "8"/>
+        <cable id = "5"/>
+        <cable id = "44"/>
+        <cable id = "43"/>
+        <cable id = "42"/>
+        <cable id = "37"/>
+        <cable id = "36"/>
+        <cable id = "35"/>
+        <cable id = "22"/>
+        <cable id = "21"/>
+        <cable id = "19"/>
+        <cable id = "18"/>
+        <cable id = "28"/>
+        <cable id = "27"/>
+        <cable id = "25"/>
+        <cable id = "24"/>
+        <cable id = "47"/>
+        <cable id = "40"/>
+        <cable id = "39"/>
+        <cable id = "33"/>
+        <cable id = "32"/>
+        <cable id = "16"/>
+        <cable id = "15"/>
+        <cable id = "13"/>
+        <cable id = "12"/>
+        <cable id = "10"/>
+        <cable id = "9"/>
+        <cable id = "7"/>
+        <cable id = "6"/>
+      </cablegroup>
+      <cablegroup name="ModelViewParmSubset_1"> 
+        <cable id = "0"/>
+        <cable id = "30"/>
+        <cable id = "4"/>
+        <cable id = "3"/>
+        <cable id = "45"/>
+        <cable id = "29"/>
+        <cable id = "2"/>
+        <cable id = "1"/>
+        <cable id = "41"/>
+        <cable id = "34"/>
+        <cable id = "20"/>
+        <cable id = "17"/>
+        <cable id = "26"/>
+        <cable id = "23"/>
+        <cable id = "46"/>
+        <cable id = "38"/>
+        <cable id = "31"/>
+        <cable id = "14"/>
+        <cable id = "11"/>
+        <cable id = "8"/>
+        <cable id = "5"/>
+        <cable id = "44"/>
+        <cable id = "43"/>
+        <cable id = "42"/>
+        <cable id = "37"/>
+        <cable id = "36"/>
+        <cable id = "35"/>
+        <cable id = "22"/>
+        <cable id = "21"/>
+        <cable id = "19"/>
+        <cable id = "18"/>
+        <cable id = "28"/>
+        <cable id = "27"/>
+        <cable id = "25"/>
+        <cable id = "24"/>
+        <cable id = "40"/>
+        <cable id = "39"/>
+        <cable id = "33"/>
+        <cable id = "32"/>
+        <cable id = "16"/>
+        <cable id = "15"/>
+        <cable id = "13"/>
+        <cable id = "12"/>
+        <cable id = "10"/>
+        <cable id = "9"/>
+        <cable id = "7"/>
+        <cable id = "6"/>
+      </cablegroup>
+      <cablegroup name="ModelViewParmSubset_2"> 
+        <cable id = "0"/>
+        <cable id = "30"/>
+        <cable id = "4"/>
+        <cable id = "3"/>
+        <cable id = "29"/>
+        <cable id = "2"/>
+        <cable id = "1"/>
+        <cable id = "41"/>
+        <cable id = "34"/>
+        <cable id = "20"/>
+        <cable id = "17"/>
+        <cable id = "26"/>
+        <cable id = "23"/>
+        <cable id = "38"/>
+        <cable id = "31"/>
+        <cable id = "14"/>
+        <cable id = "11"/>
+        <cable id = "8"/>
+        <cable id = "5"/>
+        <cable id = "44"/>
+        <cable id = "43"/>
+        <cable id = "42"/>
+        <cable id = "37"/>
+        <cable id = "36"/>
+        <cable id = "35"/>
+        <cable id = "22"/>
+        <cable id = "21"/>
+        <cable id = "19"/>
+        <cable id = "18"/>
+        <cable id = "28"/>
+        <cable id = "27"/>
+        <cable id = "25"/>
+        <cable id = "24"/>
+        <cable id = "40"/>
+        <cable id = "39"/>
+        <cable id = "33"/>
+        <cable id = "32"/>
+        <cable id = "16"/>
+        <cable id = "15"/>
+        <cable id = "13"/>
+        <cable id = "12"/>
+        <cable id = "10"/>
+        <cable id = "9"/>
+        <cable id = "7"/>
+        <cable id = "6"/>
+      </cablegroup>
+      <cablegroup name="ModelViewParmSubset_3"> 
+        <cable id = "45"/>
+        <cable id = "46"/>
+      </cablegroup>
+      <cablegroup name="ModelViewParmSubset_4"> 
+        <cable id = "41"/>
+        <cable id = "34"/>
+        <cable id = "20"/>
+        <cable id = "17"/>
+        <cable id = "26"/>
+        <cable id = "23"/>
+        <cable id = "38"/>
+        <cable id = "31"/>
+        <cable id = "14"/>
+        <cable id = "11"/>
+        <cable id = "8"/>
+        <cable id = "5"/>
+        <cable id = "44"/>
+        <cable id = "43"/>
+        <cable id = "42"/>
+        <cable id = "37"/>
+        <cable id = "36"/>
+        <cable id = "35"/>
+        <cable id = "22"/>
+        <cable id = "21"/>
+        <cable id = "19"/>
+        <cable id = "18"/>
+        <cable id = "28"/>
+        <cable id = "27"/>
+        <cable id = "25"/>
+        <cable id = "24"/>
+        <cable id = "40"/>
+        <cable id = "39"/>
+        <cable id = "33"/>
+        <cable id = "32"/>
+        <cable id = "16"/>
+        <cable id = "15"/>
+        <cable id = "13"/>
+        <cable id = "12"/>
+        <cable id = "10"/>
+        <cable id = "9"/>
+        <cable id = "7"/>
+        <cable id = "6"/>
+      </cablegroup>
+      <cablegroup name="ModelViewParmSubset_5"> 
+        <cable id = "0"/>
+        <cable id = "30"/>
+        <cable id = "4"/>
+        <cable id = "3"/>
+        <cable id = "29"/>
+        <cable id = "2"/>
+        <cable id = "1"/>
+      </cablegroup>
+      <cablegroup name="ModelViewParmSubset_6"> 
+        <cable id = "30"/>
+        <cable id = "4"/>
+        <cable id = "3"/>
+        <cable id = "29"/>
+        <cable id = "2"/>
+        <cable id = "1"/>
+        <cable id = "41"/>
+        <cable id = "34"/>
+        <cable id = "20"/>
+        <cable id = "17"/>
+        <cable id = "26"/>
+        <cable id = "23"/>
+        <cable id = "38"/>
+        <cable id = "31"/>
+        <cable id = "14"/>
+        <cable id = "11"/>
+        <cable id = "8"/>
+        <cable id = "5"/>
+        <cable id = "44"/>
+        <cable id = "43"/>
+        <cable id = "42"/>
+        <cable id = "37"/>
+        <cable id = "36"/>
+        <cable id = "35"/>
+        <cable id = "22"/>
+        <cable id = "21"/>
+        <cable id = "19"/>
+        <cable id = "18"/>
+        <cable id = "28"/>
+        <cable id = "27"/>
+        <cable id = "25"/>
+        <cable id = "24"/>
+        <cable id = "40"/>
+        <cable id = "39"/>
+        <cable id = "33"/>
+        <cable id = "32"/>
+        <cable id = "16"/>
+        <cable id = "15"/>
+        <cable id = "13"/>
+        <cable id = "12"/>
+        <cable id = "10"/>
+        <cable id = "9"/>
+        <cable id = "7"/>
+        <cable id = "6"/>
+      </cablegroup>
+      <cablegroup name="OneSecGrp_SectionRef_39"> <!-- Creating a group containing a single section: d2msn[0].axon[2]... -->
+        <cable id = "47"/>
+      </cablegroup>
+      <cablegroup name="OneSecGrp_SectionRef_4"> <!-- Creating a group containing a single section: d2msn[0].soma[0]... -->
+        <cable id = "0"/>
+      </cablegroup>
+    </cables>
+    <biophysics  units = "Physiological Units"> <!-- Note: values of cond dens are different in NEURON and phy units-->
+      <bio:mechanism name="pas" type="Channel Mechanism" passive_conductance="true">
+        <bio:parameter name="gmax" value="0.0565446">   
+          <bio:group>all</bio:group>
+        </bio:parameter>
+        <bio:parameter name="e" value="-76.9444">   
+          <bio:group>all</bio:group>
+        </bio:parameter>
+      </bio:mechanism>
+      <bio:mechanism name="bkkca" type="Channel Mechanism">
+        <bio:parameter name="gmax" value="0.541943">   
+          <bio:group>ModelViewParmSubset_2</bio:group>
+        </bio:parameter>
+        <bio:parameter name="q" value="0.4">   
+          <bio:group>ModelViewParmSubset_2</bio:group>
+        </bio:parameter>
+      </bio:mechanism>
+      <bio:mechanism name="caL" type="Channel Mechanism">
+        <bio:parameter name="pbar" value="1.943e-06">   
+          <bio:group>ModelViewParmSubset_2</bio:group>
+        </bio:parameter>
+        <bio:parameter name="mshift" value="0">   
+          <bio:group>ModelViewParmSubset_2</bio:group>
+        </bio:parameter>
+        <bio:parameter name="hshift" value="0">   
+          <bio:group>ModelViewParmSubset_2</bio:group>
+        </bio:parameter>
+        <bio:parameter name="qfact" value="1.2">   
+          <bio:group>ModelViewParmSubset_2</bio:group>
+        </bio:parameter>
+      </bio:mechanism>
+      <bio:mechanism name="caL13" type="Channel Mechanism">
+        <bio:parameter name="pcaLbar" value="1.262e-07">   
+          <bio:group>ModelViewParmSubset_2</bio:group>
+        </bio:parameter>
+        <bio:parameter name="mshift" value="0">   
+          <bio:group>ModelViewParmSubset_2</bio:group>
+        </bio:parameter>
+        <bio:parameter name="hshift" value="0">   
+          <bio:group>ModelViewParmSubset_2</bio:group>
+        </bio:parameter>
+        <bio:parameter name="qfact" value="1.2">   
+          <bio:group>ModelViewParmSubset_2</bio:group>
+        </bio:parameter>
+        <bio:parameter name="hqfact" value="1.2">   
+          <bio:group>ModelViewParmSubset_2</bio:group>
+        </bio:parameter>
+      </bio:mechanism>
+      <bio:mechanism name="cadyn" type="Channel Mechanism">
+        <bio:parameter name="drive" value="10000">   
+          <bio:group>ModelViewParmSubset_2</bio:group>
+        </bio:parameter>
+        <bio:parameter name="cainf" value="1e-05">   
+          <bio:group>ModelViewParmSubset_2</bio:group>
+        </bio:parameter>
+        <bio:parameter name="taur" value="43">   
+          <bio:group>ModelViewParmSubset_2</bio:group>
+        </bio:parameter>
+        <bio:parameter name="pump" value="0.02">   
+          <bio:group>ModelViewParmSubset_2</bio:group>
+        </bio:parameter>
+      </bio:mechanism>
+      <bio:mechanism name="caldyn" type="Channel Mechanism">
+        <bio:parameter name="drive" value="10000">   
+          <bio:group>ModelViewParmSubset_2</bio:group>
+        </bio:parameter>
+        <bio:parameter name="cainf" value="1e-05">   
+          <bio:group>ModelViewParmSubset_2</bio:group>
+        </bio:parameter>
+        <bio:parameter name="taur" value="43">   
+          <bio:group>ModelViewParmSubset_2</bio:group>
+        </bio:parameter>
+        <bio:parameter name="pump" value="0.02">   
+          <bio:group>ModelViewParmSubset_2</bio:group>
+        </bio:parameter>
+      </bio:mechanism>
+      <bio:mechanism name="can" type="Channel Mechanism">
+        <bio:parameter name="pbar" value="3.7525e-06">   
+          <bio:group>ModelViewParmSubset_2</bio:group>
+        </bio:parameter>
+        <bio:parameter name="mshift" value="0">   
+          <bio:group>ModelViewParmSubset_2</bio:group>
+        </bio:parameter>
+        <bio:parameter name="hshift" value="0">   
+          <bio:group>ModelViewParmSubset_2</bio:group>
+        </bio:parameter>
+        <bio:parameter name="qfact" value="1.2">   
+          <bio:group>ModelViewParmSubset_2</bio:group>
+        </bio:parameter>
+      </bio:mechanism>
+      <bio:mechanism name="caq" type="Channel Mechanism">
+        <bio:parameter name="pcaqbar" value="0">   
+          <bio:group>ModelViewParmSubset_2</bio:group>
+        </bio:parameter>
+      </bio:mechanism>
+      <bio:mechanism name="car" type="Channel Mechanism">
+        <bio:parameter name="pcarbar" value="1.16228e-05">   
+          <bio:group>ModelViewParmSubset_2</bio:group>
+        </bio:parameter>
+        <bio:parameter name="mshift" value="0">   
+          <bio:group>ModelViewParmSubset_2</bio:group>
+        </bio:parameter>
+        <bio:parameter name="hshift" value="0">   
+          <bio:group>ModelViewParmSubset_2</bio:group>
+        </bio:parameter>
+        <bio:parameter name="qfact" value="1.2">   
+          <bio:group>ModelViewParmSubset_2</bio:group>
+        </bio:parameter>
+      </bio:mechanism>
+      <bio:mechanism name="cat" type="Channel Mechanism">
+        <bio:parameter name="pcatbar" value="1.111e-07">   
+          <bio:group>ModelViewParmSubset_2</bio:group>
+        </bio:parameter>
+        <bio:parameter name="mshift" value="0">   
+          <bio:group>ModelViewParmSubset_2</bio:group>
+        </bio:parameter>
+        <bio:parameter name="hshift" value="0">   
+          <bio:group>ModelViewParmSubset_2</bio:group>
+        </bio:parameter>
+        <bio:parameter name="qfact" value="1.2">   
+          <bio:group>ModelViewParmSubset_2</bio:group>
+        </bio:parameter>
+      </bio:mechanism>
+      <bio:mechanism name="kaf" type="Channel Mechanism">
+        <bio:parameter name="gmax" value="4.75309">   
+          <bio:group>ModelViewParmSubset_3</bio:group>
+        </bio:parameter>
+        <bio:parameter name="gmax" value="27.9988">   
+          <bio:group>ModelViewParmSubset_4</bio:group>
+        </bio:parameter>
+        <bio:parameter name="gmax" value="30.6049">   
+          <bio:group>ModelViewParmSubset_5</bio:group>
+        </bio:parameter>
+        <bio:parameter name="mshift" value="0">   
+          <bio:group>ModelViewParmSubset_1</bio:group>
+        </bio:parameter>
+        <bio:parameter name="hshift" value="0">   
+          <bio:group>ModelViewParmSubset_1</bio:group>
+        </bio:parameter>
+        <bio:parameter name="qfact" value="1.2">   
+          <bio:group>ModelViewParmSubset_1</bio:group>
+        </bio:parameter>
+      </bio:mechanism>
+      <bio:mechanism name="kas" type="Channel Mechanism">
+        <bio:parameter name="gmax" value="0.00873543">   
+          <bio:group>ModelViewParmSubset_4</bio:group>
+        </bio:parameter>
+        <bio:parameter name="gmax" value="0.0954872">   
+          <bio:group>ModelViewParmSubset_5</bio:group>
+        </bio:parameter>
+        <bio:parameter name="gmax" value="26.7536">   
+          <bio:group>ModelViewParmSubset_3</bio:group>
+        </bio:parameter>
+        <bio:parameter name="qfact" value="3.6">   
+          <bio:group>ModelViewParmSubset_1</bio:group>
+        </bio:parameter>
+        <bio:parameter name="hshift" value="0">   
+          <bio:group>ModelViewParmSubset_3</bio:group>
+        </bio:parameter>
+        <bio:parameter name="hshift" value="22.5">   
+          <bio:group>ModelViewParmSubset_2</bio:group>
+        </bio:parameter>
+        <bio:parameter name="mshift" value="0">   
+          <bio:group>ModelViewParmSubset_3</bio:group>
+        </bio:parameter>
+        <bio:parameter name="mshift" value="2">   
+          <bio:group>ModelViewParmSubset_2</bio:group>
+        </bio:parameter>
+      </bio:mechanism>
+      <bio:mechanism name="kdr" type="Channel Mechanism">
+        <bio:parameter name="gmax" value="0.0395576">   
+          <bio:group>ModelViewParmSubset_2</bio:group>
+        </bio:parameter>
+        <bio:parameter name="gmax" value="0.16778">   
+          <bio:group>ModelViewParmSubset_3</bio:group>
+        </bio:parameter>
+        <bio:parameter name="qfact" value="0.2">   
+          <bio:group>ModelViewParmSubset_1</bio:group>
+        </bio:parameter>
+      </bio:mechanism>
+      <bio:mechanism name="kir" type="Channel Mechanism">
+        <bio:parameter name="gmax" value="13.6007">   
+          <bio:group>ModelViewParmSubset_2</bio:group>
+        </bio:parameter>
+        <bio:parameter name="mvhalf" value="-52">   
+          <bio:group>ModelViewParmSubset_2</bio:group>
+        </bio:parameter>
+        <bio:parameter name="mslope" value="11.8895">   
+          <bio:group>ModelViewParmSubset_2</bio:group>
+        </bio:parameter>
+        <bio:parameter name="mshift" value="101.341">   
+          <bio:group>ModelViewParmSubset_2</bio:group>
+        </bio:parameter>
+        <bio:parameter name="qfact" value="0.2">   
+          <bio:group>ModelViewParmSubset_2</bio:group>
+        </bio:parameter>
+      </bio:mechanism>
+      <bio:mechanism name="naf" type="Channel Mechanism">
+        <bio:parameter name="gmax" value="11.5809">   
+          <bio:group>ModelViewParmSubset_6</bio:group>
+        </bio:parameter>
+        <bio:parameter name="gmax" value="890.841">   
+          <bio:group>OneSecGrp_SectionRef_4</bio:group>
+        </bio:parameter>
+        <bio:parameter name="gmax" value="1565.29">   
+          <bio:group>ModelViewParmSubset_3</bio:group>
+        </bio:parameter>
+        <bio:parameter name="mshift" value="-10">   
+          <bio:group>ModelViewParmSubset_3</bio:group>
+        </bio:parameter>
+        <bio:parameter name="mshift" value="0">   
+          <bio:group>ModelViewParmSubset_2</bio:group>
+        </bio:parameter>
+        <bio:parameter name="hshift" value="-5">   
+          <bio:group>ModelViewParmSubset_3</bio:group>
+        </bio:parameter>
+        <bio:parameter name="hshift" value="0">   
+          <bio:group>ModelViewParmSubset_2</bio:group>
+        </bio:parameter>
+        <bio:parameter name="mqfact" value="1.2">   
+          <bio:group>ModelViewParmSubset_1</bio:group>
+        </bio:parameter>
+        <bio:parameter name="hqfact" value="1.2">   
+          <bio:group>ModelViewParmSubset_1</bio:group>
+        </bio:parameter>
+      </bio:mechanism>
+      <bio:mechanism name="nap" type="Channel Mechanism">
+        <bio:parameter name="gmax" value="0.00143951">   
+          <bio:group>ModelViewParmSubset_6</bio:group>
+        </bio:parameter>
+        <bio:parameter name="gmax" value="0.04">   
+          <bio:group>ModelViewParmSubset_3</bio:group>
+        </bio:parameter>
+        <bio:parameter name="gmax" value="0.41719">   
+          <bio:group>OneSecGrp_SectionRef_4</bio:group>
+        </bio:parameter>
+        <bio:parameter name="qfact" value="0.5">   
+          <bio:group>ModelViewParmSubset_1</bio:group>
+        </bio:parameter>
+      </bio:mechanism>
+      <bio:mechanism name="skkca" type="Channel Mechanism">
+        <bio:parameter name="stau" value="1">   
+          <bio:group>ModelViewParmSubset_2</bio:group>
+        </bio:parameter>
+        <bio:parameter name="qfact" value="0.4">   
+          <bio:group>ModelViewParmSubset_2</bio:group>
+        </bio:parameter>
+        <bio:parameter name="gmax" value="63.4956">   
+          <bio:group>ModelViewParmSubset_2</bio:group>
+        </bio:parameter>
+        <bio:parameter name="abar" value="0.48">   
+          <bio:group>ModelViewParmSubset_2</bio:group>
+        </bio:parameter>
+        <bio:parameter name="bbar" value="0.28">   
+          <bio:group>ModelViewParmSubset_2</bio:group>
+        </bio:parameter>
+      </bio:mechanism>
+      <bio:spec_capacitance>
+        <bio:parameter value="0.018">   
+          <bio:group>OneSecGrp_SectionRef_39</bio:group>
+        </bio:parameter>
+        <bio:parameter value="0.900001">   
+          <bio:group>ModelViewParmSubset_1</bio:group>
+        </bio:parameter>
+      </bio:spec_capacitance>
+      <bio:spec_axial_resistance>
+        <bio:parameter value="0.1">   
+          <bio:group>all</bio:group>
+        </bio:parameter>
+      </bio:spec_axial_resistance>
+    </biophysics>
+  </cell>
+</cells>
+</neuroml>

@@ -1,0 +1,734 @@
+//execute1("celltypes.element(\"d1msn\")")
+
+begintemplate d1msn
+public init, topol, basic_shape, subsets, geom, biophys, geom_nseg, biophys_inhomo
+public setup_parameters, set_params,scale_all_qfac
+public synlist, x, y, z, position, connect2target
+public proximal, middend, distal, axonal, axon_init, axon_myelin
+public soma, dend1, dend2, dend3, dend4, dend1_1, dend1_2
+public dend2_1, dend2_2, dend4_1, dend4_2, dend3_2, dend3_1
+public dend5, dend6, dend5_1, dend6_1, dend5_2, dend6_2, axon
+public all
+
+objref synlist
+
+proc init() {
+  xopen("msn_wolf_baseline_values.txt")
+  xopen("msn_wolf_all_tau_vecs.hoc")
+  topol()
+  subsets()
+  geom()
+  biophys()
+  geom_nseg()
+  setup_parameters()
+  set_params()
+  scale_all_qfac()
+  
+  synlist = new List()
+  synapses()
+
+
+  v_init = V0
+  {set_n_params(1.4591637794, 0.0002028940, 0.0020926321, 0.0400568986, 0.0022464083, 0.0072413401, 0.0447432474, 0.0000011150, 0.0000001622, 0.0000004164, 0.0000294557, 0.0000001083, 3.6878716587, 0.0286704164, 0.0213947010, 0.0082428157, 0.0050798866) set_params() } 
+
+  forall {
+		//print secname(), " ", 
+		nseg  compts = compts + nseg
+	}
+
+	print compts, " compartments"
+  x = y = z = 0 // only change via position
+}
+
+create soma[1], dend1, dend2, dend3, dend4, dend1_1[3], dend1_2[3]
+create dend2_1[3], dend2_2[3], dend4_1[3], dend4_2[3], dend3_2[3], dend3_1[3]
+create dend5, dend5_1[3], dend5_2
+create dend6, dend6_1, dend6_2
+create axon[3]
+
+proc topol() { local i
+  
+  connect dend1(0), soma(1)
+  connect dend2(0), soma(1)
+  connect dend3(0), soma(0)
+  connect dend4(0), soma(0)
+  connect dend5(0), soma(1)
+  connect dend6(0), soma(0)
+  connect axon[0](0), soma(0.5)
+  for i = 1, 2 connect axon[i](0), axon[i-1](1)
+  connect dend1_1(0), dend1(1)
+  for i = 1, 2 connect dend1_1[i](0), dend1_1(1)
+  connect dend1_2(0), dend1(1)
+  for i = 1, 2 connect dend1_2[i](0), dend1_2(1)
+  connect dend2_1(0), dend2(1)
+  for i = 1, 2 connect dend2_1[i](0), dend2_1(1)
+  connect dend2_2(0), dend2(1)
+  for i = 1, 2 connect dend2_2[i](0), dend2_2(1)
+  connect dend4_1(0), dend4(1)
+  for i = 1, 2 connect dend4_1[i](0), dend4_1(1)
+  connect dend4_2(0), dend4(1)
+  for i = 1, 2 connect dend4_2[i](0), dend4_2(1)
+  connect dend3_2(0), dend3(1)
+  for i = 1, 2 connect dend3_2[i](0), dend3_2(1)
+  connect dend3_1(0), dend3(1)
+  for i = 1, 2 connect dend3_1[i](0), dend3_1(1)
+
+  // two more dendrites, added Jan 2017
+  connect dend5_1(0), dend5(1)
+  for i = 1, 2 connect dend5_1[i](0), dend5_1(1)
+  connect dend5_2(0), dend5(1)
+  connect dend6_1(0), dend6(1)
+  connect dend6_2(0), dend6(1)
+// Above is the actual connection!!
+  basic_shape()
+}
+proc shape3d_1() {
+  soma {pt3dclear() pt3dadd(0, 0, 0, 1) pt3dadd(15, 0, 0, 1)}
+  dend1 {pt3dclear() pt3dadd(15, 0, 0, 1) pt3dadd(45, -29, 0, 1)}
+  dend2 {pt3dclear() pt3dadd(15, 0, 0, 1) pt3dadd(45, 30, 0, 1)}
+  dend3 {pt3dclear() pt3dadd(0, 0, 0, 1) pt3dadd(-29, -29, 0, 1)}
+  dend4 {pt3dclear() pt3dadd(0, 0, 0, 1) pt3dadd(-29, 30, 0, 1)}
+  dend1_1 {pt3dclear() pt3dadd(45, -29, 0, 1) pt3dadd(45, -59, 0, 1)}
+  dend1_2 {pt3dclear() pt3dadd(45, -29, 0, 1) pt3dadd(90, -29, 0, 1)}
+  dend2_1 {pt3dclear() pt3dadd(45, 30, 0, 1) pt3dadd(90, 30, 0, 1)}
+  dend2_2 {pt3dclear() pt3dadd(45, 30, 0, 1) pt3dadd(60, 75, 0, 1)}
+  dend4_1 {pt3dclear() pt3dadd(-29, 30, 0, 1) pt3dadd(-44, 75, 0, 1)}
+  dend4_2 {pt3dclear() pt3dadd(-29, 30, 0, 1) pt3dadd(-74, 30, 0, 1)}
+  dend3_2 {pt3dclear() pt3dadd(-29, -29, 0, 1) pt3dadd(-74, -29, 0, 1)}
+  dend3_1 {pt3dclear() pt3dadd(-29, -29, 0, 1) pt3dadd(-44, -59, 0, 1)}
+  dend1_1[1] {pt3dclear() pt3dadd(45, -59, 0, 1) pt3dadd(30, -89, 0, 1)}
+  dend1_1[2] {pt3dclear() pt3dadd(45, -59, 0, 1) pt3dadd(75, -74, 0, 1)}
+  dend1_2[1] {pt3dclear() pt3dadd(90, -29, 0, 1) pt3dadd(120, -14, 0, 1)}
+  dend1_2[2] {pt3dclear() pt3dadd(90, -29, 0, 1) pt3dadd(120, -59, 0, 1)}
+  dend2_1[1] {pt3dclear() pt3dadd(90, 30, 0, 1) pt3dadd(120, 15, 0, 1)}
+  dend2_1[2] {pt3dclear() pt3dadd(90, 30, 0, 1) pt3dadd(105, 60, 0, 1)}
+  dend2_2[1] {pt3dclear() pt3dadd(60, 75, 0, 1) pt3dadd(90, 90, 0, 1)}
+  dend2_2[2] {pt3dclear() pt3dadd(60, 75, 0, 1) pt3dadd(45, 105, 0, 1)}
+  dend4_1[1] {pt3dclear() pt3dadd(-44, 75, 0, 1) pt3dadd(-14, 105, 0, 1)}
+  dend4_1[2] {pt3dclear() pt3dadd(-44, 75, 0, 1) pt3dadd(-74, 90, 0, 1)}
+  dend4_2[1] {pt3dclear() pt3dadd(-74, 30, 0, 1) pt3dadd(-89, 60, 0, 1)}
+  dend4_2[2] {pt3dclear() pt3dadd(-74, 30, 0, 1) pt3dadd(-104, 15, 0, 1)}
+  dend3_2[1] {pt3dclear() pt3dadd(-74, -29, 0, 1) pt3dadd(-104, -14, 0, 1)}
+  dend3_2[2] {pt3dclear() pt3dadd(-74, -29, 0, 1) pt3dadd(-104, -59, 0, 1)}
+  dend3_1[1] {pt3dclear() pt3dadd(-44, -59, 0, 1) pt3dadd(-29, -89, 0, 1)}
+  dend3_1[2] {pt3dclear() pt3dadd(-44, -59, 0, 1) pt3dadd(-89, -74, 0, 1)}
+
+  // added two more dendrites, 1/11/17
+  dend5 {pt3dclear() pt3dadd(15, 0, 0, 1) pt3dadd(45, 0, 0, 1)}
+  dend6 {pt3dclear() pt3dadd(0, 0, 0, 1) pt3dadd(-30, 0, 0, 1)}
+  dend5_1 {pt3dclear() pt3dadd(45,  0, 0, 1) pt3dadd(75, 15, 0, 1)}
+  dend5_1[1] {pt3dclear() pt3dadd(75, 15, 0, 0, 1) pt3dadd(90, 15, 0, 1)}
+  dend5_1[2] {pt3dclear() pt3dadd(75, 15, 0, 1) pt3dadd(90, 30, 0, 1)}
+  dend5_2 {pt3dclear() pt3dadd(45,  0, 0, 1) pt3dadd(75, -15, 0, 1)}
+  dend6_1 {pt3dclear() pt3dadd(-30, 0, 0, 1) pt3dadd(-60, 15, 0, 1)}
+  dend6_2 {pt3dclear() pt3dadd(-30, 0, 0, 1) pt3dadd(-60, -15, 0, 1)}
+  
+}
+proc basic_shape() {
+  shape3d_1()
+}
+
+proc set_n_params() {
+        dgnaf = $1
+        dgnap = $2
+        dgkas = $3
+        dgkaf = $4
+        dgkdr = $5
+        dgbk = $6
+        dgsk = $7
+        dpcaL = $8
+        dpcaL13 = $9
+        dpcan = $10
+        dpcar = $11
+        dpcat = $12
+        dgnaf_AIS = $13
+        dgkas_AIS = $14
+        dgkaf_AIS = $15
+        dgkdr_AIS = $16
+        dgnap_AIS = $17
+}
+
+objref all, proximal, middend, distal, axonal, axon_init, axon_myelin
+
+proc subsets() { local i
+  objref all, proximal, middend, distal, axonal
+  objref axon_init, axon_myelin
+  
+  all = new SectionList()
+  axonal = new SectionList()
+  axon_myelin=new SectionList()
+  axon_init = new SectionList()
+  
+  axon[0] {
+    axon_init.append()
+    axonal.append()
+    }
+  axon[1] {
+    axon_init.append()
+    axonal.append()
+    }
+  axon[2] {
+    axon_myelin.append()
+    axonal.append()
+    }  
+    soma all.append()
+    axon all.append()
+    dend1 all.append()
+    dend2 all.append()
+    dend3 all.append()
+    dend4 all.append()
+    dend5 all.append()
+    dend6 all.append()
+    dend1_1 all.append()
+    dend1_2 all.append()
+    dend2_1 all.append()
+    dend2_2 all.append()
+    dend3_1 all.append()
+    dend3_2 all.append()
+    dend4_1 all.append()
+    dend4_2 all.append()
+    dend5_1 all.append()
+    dend5_2 all.append()
+    dend6_1 all.append()
+    dend6_2 all.append()
+    for i=0, 2 dend1_1[i] all.append()
+    for i=0, 2 dend1_2[i] all.append()
+    for i=0, 2 dend2_1[i] all.append()
+    for i=0, 2 dend2_2[i] all.append()
+    for i=0, 2 dend3_1[i] all.append()
+    for i=0, 2 dend3_2[i] all.append()
+    for i=0, 2 dend4_1[i] all.append()
+    for i=0, 2 dend4_2[i] all.append()
+    for i=0, 2 dend5_1[i] all.append()
+
+//  forsec axonal { all.append() }
+
+  proximal = new SectionList()
+    dend1 proximal.append()
+    dend2 proximal.append()
+    dend3 proximal.append()
+    dend4 proximal.append()
+    dend5 proximal.append()
+    dend6 proximal.append()
+
+  middend = new SectionList()
+    dend1_1 middend.append()
+    dend1_2 middend.append()
+    dend2_1 middend.append()
+    dend2_2 middend.append()
+    dend4_1 middend.append()
+    dend4_2 middend.append()
+    dend3_2 middend.append()
+    dend3_1 middend.append()
+    dend5_1 middend.append()
+    dend5_2 middend.append()
+    dend6_1 middend.append()
+    dend6_2 middend.append()
+
+  distal = new SectionList()
+    for i=1, 2 dend1_1[i] distal.append()
+    for i=1, 2 dend1_2[i] distal.append()
+    for i=1, 2 dend2_1[i] distal.append()
+    for i=1, 2 dend2_2[i] distal.append()
+    for i=1, 2 dend4_1[i] distal.append()
+    for i=1, 2 dend4_2[i] distal.append()
+    for i=1, 2 dend3_2[i] distal.append()
+    for i=1, 2 dend3_1[i] distal.append()
+    for i=1, 2 dend5_1[i] distal.append()
+
+}
+proc geom() {
+  soma {  L = 11.2753  diam = 9.99  }
+  forsec proximal {L = 30.361812 diam = 1.3861217}	//forsec proximal {L = 20 diam = 1.125}	
+  forsec middend  {L = 36.42597 diam = 1.3551664}//forsec middend  {L = 24 diam = 1.1}	// { L = 20		diam = 1 * (1+0.3) }	
+  forsec distal {L = 174.77467	diam = 0.92105621}//forsec distal {L = 106.8	diam = 0.72}	// { L = 190	diam = 0.5 * (1+2) } 
+  axon[0] {L=20 diam(0:1)=1.5:0.875 }
+  axon[1] {L=30 diam(0:1)=0.875:0.5}
+  axon[2] {L=400 diam=0.5}
+}
+print "Successful loading D1 MSN morph"
+
+func lambda_f() { local i, x1, x2, d1, d2, lam
+        if (n3d() < 2) {
+                return 1e5*sqrt(diam/(4*PI*$1*Ra*cm))
+        }
+		// above was too inaccurate with large variation in 3d diameter
+		// so now we use all 3-d points to get a better approximate lambda
+
+        x1 = arc3d(0)
+        d1 = diam3d(0)
+        lam = 0
+        for i=1, n3d()-1 {
+                x2 = arc3d(i)
+                d2 = diam3d(i)
+                lam += (x2 - x1)/sqrt(d1 + d2)
+                x1 = x2   d1 = d2
+        }
+
+        //  length of the section in units of lambda
+        lam *= sqrt(2) * 1e-5*sqrt(4*PI*$1*Ra*cm)
+
+        return L/lam
+}
+
+proc geom_nseg() {
+	freq = 100      // Hz, frequency at which AC length constant will be computed
+	d_lambda = 0.1
+
+	forall { nseg = int((L/(d_lambda*lambda_f(freq))+0.9)/2)*2 + 1  }
+}
+
+proc biophys() {
+
+  forsec proximal {
+
+	insert naf
+	insert nap
+
+	insert kir
+	insert kas
+	insert kaf
+	insert bkkca
+	insert skkca
+	insert kdr
+	insert pas
+	
+	insert caldyn
+	insert caL
+	insert caL13
+
+	insert cadyn
+	insert can
+	insert caq
+	insert car
+	insert cat
+  }
+
+  forsec middend {
+
+	insert naf
+	insert nap
+	insert pas
+	
+	insert kir
+	insert kas
+	insert kaf
+	insert bkkca
+	insert skkca
+	insert kdr
+
+	insert caldyn
+	insert caL
+   	insert caL13
+
+	insert cadyn
+	insert can
+	insert caq
+	insert car
+	insert cat
+}
+
+  forsec distal {
+
+	insert naf
+	insert nap
+
+	insert kir
+	insert kas
+	insert kaf
+	insert bkkca
+	insert skkca
+	insert kdr
+	insert pas
+	
+	insert caldyn
+	insert caL
+   	insert caL13
+
+	insert cadyn
+	insert can
+	insert caq
+	insert car
+	insert cat
+  }
+
+  soma {
+
+	insert naf
+	insert nap
+
+	insert kir
+	insert kas
+	insert kaf
+	insert bkkca
+	insert skkca
+	insert kdr
+	insert pas
+	
+	insert caldyn
+	insert caL
+	insert caL13
+
+	insert cadyn
+	insert can
+	insert caq
+	insert car	
+	insert cat
+ 
+ }
+
+  forsec axon_init {
+//	insert naf
+//	insert kaf
+//	insert kas
+//	insert nap
+//	insert kdr
+	insert pas
+	
+  }
+  
+  forsec axon_myelin {
+  	insert pas
+  	}
+    
+}
+print "Successful inserting all the channels"
+
+proc setup_parameters() {
+
+    dgnaf = G_NAF
+    dgnaf_AIS = G_NAF_AIS
+    dgnap = G_NAP
+    dgnap_AIS = G_NAP_AIS
+    dgkir = G_KIR
+    dgkas = G_KAS
+    dgkaf = G_KAF
+    dgbk = G_BKKCA
+    dgsk = G_SKKCA
+    dgkas_AIS = G_KAS_AIS
+    dgkaf_AIS = G_KAF_AIS
+    dgkdr = G_KDR
+    dgkdr_AIS = G_KDR_AIS
+
+    dpcaL = P_CAL
+    dpcaL13 = P_CAL13
+    dpcan = P_CAN
+    dpcaq = P_CAQ
+    dpcar = P_CAR
+    dpcat = P_CAT
+
+    dg_pas = G_PAS
+    de_pas = E_PAS
+    dcm = CM
+    dRa = RA
+
+    dena = ENA
+    dek  = EK
+
+
+    
+    // prox dendrite scale factors - these varied in the Wolf and/or Evans papers
+    dgnaf_proxF = G_NAFD / G_NAF
+    dgnap_proxF = G_NAPD / G_NAP
+    dgkas_proxF = 1	// proximal & soma equal
+    dgkaf_proxF = 1	// proximal & soma equal
+    dgkdr_proxF = 1
+
+    // mid dendrite scale factors - these varied in the Wolf and/or Evans papers
+    dgnaf_midF = G_NAFD / G_NAF
+    dgnap_midF = G_NAPD / G_NAP
+    dgkas_midF = G_KASD / G_KAS
+    dgkaf_midF = G_KAFD / G_KAF
+    dgkdr_midF = 1
+    
+    // dist dendrite scale factors - these varied in the Wolf and/or Evans papers
+    dgnaf_distF = G_NAFD / G_NAF
+    dgnap_distF = G_NAPD / G_NAP
+    dgkas_distF = G_KASD / G_KAS
+    dgkaf_distF = G_KAFD / G_KAF
+    dgkdr_distF = 1
+
+    // all these were constant in Wolf & Evans papers
+    dgkir_proxF = 1
+    dgbk_proxF  = 1
+    dgsk_proxF  = 1
+    dgkir_midF = 1
+    dgbk_midF  = 1
+    dgsk_midF  = 1
+    dgkir_distF = 1
+    dgbk_distF  = 1
+    dgsk_distF  = 1
+
+    // kinetic parameters - 11/30/16, focus on Q factors
+
+    dQkir = QKIR
+    dmshkir = SHKIR
+    dslpkir	= SLPKIR
+
+
+
+}
+print "Successful setting all the dummy variables"
+
+proc set_params() {  local mslp, mshft, hshft
+	v_init = V0
+    forall {
+        e_pas   = de_pas
+        g_pas   = dg_pas 
+        cm      = dcm
+        Ra      = RA
+        Cm      = CM
+        if( ismembrane("na_ion")) { ena     = dena }
+        if( ismembrane("k_ion" )) { ek      = dek  }
+        if( ismembrane("kir") ) { 
+	    qfact_kir = dQkir 
+	    mshift_kir = dmshkir
+	    mslope_kir = dslpkir
+	    mshift_nap = MSHIFT_NAP
+	    hshift_nap = HSHIFT_NAP
+	    mshift_kas = MSHIFT_KAS
+	    hshift_kas = HSHIFT_KAS
+	    celsius_sk_skkca = CELSIUS_SK_SKKCA
+	    m1half_bkkca = M1HALF_BK
+	    m2half_bkkca = M2HALF_BK
+	    m3half_bkkca = M3HALF_BK
+	    mshift_kaf = MSHIFT_KAF
+	    hshift_kaf = HSHIFT_KAF
+	    htaushift_kas = HTAUSHIFT_KAS
+	}
+    }
+
+    soma {
+        g_pas       = dg_pas
+        Ra          = dRa
+
+        // eca     = deca
+    
+	gnabar_naf = dgnaf
+	gnabar_nap = dgnap
+
+	gkbar_kir = dgkir
+	gkbar_kas = dgkas
+	gkbar_kaf = dgkaf
+	gkbar_bkkca = dgbk
+	gkbar_skkca = dgsk
+	gkbar_kdr = dgkdr
+
+	pbar_caL = dpcaL
+	pcaLbar_caL13 = dpcaL13
+
+	pbar_can = dpcan
+	pcaqbar_caq = dpcaq
+	pcarbar_car = dpcar
+	pcatbar_cat = dpcat
+
+        mslp  = SOMA_MSLOPE_NAF		//mslope_naf
+        mshft = SOMA_MSHIFT_NAF		//mshift_naf
+        hshft = SOMA_HSHIFT_NAF		//hshift_naf
+
+        mslope_naf = mslp
+        mshift_naf = mshft
+        hshift_naf = hshft
+        mshift_nap = MSHIFT_NAP
+	    hshift_nap = HSHIFT_NAP
+	    mshift_kas = MSHIFT_KAS
+	    hshift_kas = HSHIFT_KAS
+	    celsius_sk_skkca = CELSIUS_SK_SKKCA
+	    m1half_bkkca = M1HALF_BK
+	    m2half_bkkca = M2HALF_BK
+	    m3half_bkkca = M3HALF_BK
+	    mshift_kaf = MSHIFT_KAF
+	    hshift_kaf = HSHIFT_KAF
+	    htaushift_kas = HTAUSHIFT_KAS
+    }
+    
+    forsec proximal {
+        g_pas       = dg_pas
+        Ra          = dRa
+
+        // eca     = deca
+    
+	gnabar_naf = dgnaf * dgnaf_proxF
+	gnabar_nap = dgnap * dgnap_proxF
+
+	gkbar_kir = dgkir * dgkir_proxF
+	gkbar_kas = dgkas * dgkas_proxF
+	gkbar_kaf = dgkaf * dgkaf_proxF
+	gkbar_kdr = dgkdr * dgkdr_proxF
+	gkbar_bkkca = dgbk * dgbk_proxF
+	gkbar_skkca = dgsk * dgsk_proxF
+
+	pbar_caL = dpcaL
+	pcaLbar_caL13 = dpcaL13
+
+	pbar_can = dpcan
+	pcaqbar_caq = dpcaq
+	pcarbar_car = dpcar
+	pcatbar_cat = dpcat
+
+        mslope_naf = mslp
+        mshift_naf = mshft
+        hshift_naf = hshft
+    }
+
+
+    forsec middend {
+        g_pas       = dg_pas
+        Ra          = dRa
+
+        // eca     = deca
+    
+	gnabar_naf = dgnaf * dgnaf_midF
+	gnabar_nap = dgnap * dgnap_midF
+
+	gkbar_kir = dgkir * dgkir_midF
+	gkbar_kas = dgkas * dgkas_midF
+	gkbar_kaf = dgkaf * dgkaf_midF
+	gkbar_kdr = dgkdr * dgkdr_midF
+	gkbar_bkkca = dgbk * dgbk_midF
+	gkbar_skkca = dgsk * dgsk_midF
+
+	pbar_caL = dpcaL
+	pcaLbar_caL13 = dpcaL13
+
+	pbar_can = dpcan
+	pcaqbar_caq = dpcaq
+	pcarbar_car = dpcar
+	pcatbar_cat = dpcat
+
+        mslope_naf = mslp
+        mshift_naf = mshft
+        hshift_naf = hshft
+    }
+
+
+    forsec distal {
+        g_pas       = dg_pas
+        Ra          = dRa
+
+        // eca     = deca
+    
+	gnabar_naf = dgnaf * dgnaf_distF
+	gnabar_nap = dgnap * dgnap_distF
+
+	gkbar_kir = dgkir * dgkir_distF
+	gkbar_kas = dgkas * dgkas_distF
+	gkbar_kaf = dgkaf * dgkaf_distF
+	gkbar_kdr = dgkdr * dgkdr_distF
+	gkbar_bkkca = dgbk * dgbk_distF
+	gkbar_skkca = dgsk * dgsk_distF
+
+	pbar_caL = dpcaL
+	pcaLbar_caL13 = dpcaL13
+
+	pbar_can = dpcan
+	pcaqbar_caq = dpcaq
+	pcarbar_car = dpcar
+	pcatbar_cat = dpcat
+
+        mslope_naf = mslp
+        mshift_naf = mshft
+        hshift_naf = hshft
+    }
+
+    // kinetic parameters
+
+    /*** for now, kept constant
+    // set taumod values to the optimiser values
+	mtaumod_naf	= dtmmnaf
+	htaumod_naf	= dtmhnaf
+	taumod_kdr 	= dtmkdr
+	taumod_km 	= dtmkm
+	taumod_kc 	= dtmkc
+	taumod_cal	= dtmcal
+	mtaumod_ka	= dtmmka
+	htaumod_ka	= dtmhka
+	taumod_nap	= dtmnap
+	taumod_ar	= dtmar
+
+	// set usetable values to 0 if needed
+	if ( mtaumod_naf != 1 ) { usetable_naf = 0 }
+	if ( htaumod_naf != 1 ) { usetable_naf = 0 }
+	if ( taumod_kdr != 1 ) { usetable_kdr = 0 }
+	if ( taumod_km != 1 ) { usetable_km = 0 }
+	if ( taumod_kc != 1 ) { usetable_kc = 0 }
+	if ( taumod_cal != 1 ) {usetable_cal = 0 }
+	if ( mtaumod_ka != 1 ) { usetable_ka = 0 }
+	if ( htaumod_ka != 1 ) { usetable_ka = 0 }
+	if ( usetable_nap != 1 ) {usetable_nap = 0 }
+	if ( usetable_ar != 1 ) {usetable_ar = 0 }
+
+	// vshifts:
+	fastNashift_naf = dvsnaf
+	vshift_kdr 	= dvskdr
+	vshift_km 	= dvskm
+	vshift_kc 	= dvskc
+	vshift_cal 	= dvscal
+	vshift_ka 	= dvska
+	vshift_nap 	= dvsnap
+	vshift_ar 	= dvsar
+
+	// set usetable values to 0 if needed
+	if ( fastNashift_naf != -3.5 ) { usetable_naf = 0 }
+	if ( vshift_kdr != 0 ) { usetable_kdr = 0 }
+	if ( vshift_km != 0 ) { usetable_km = 0 }
+	if ( vshift_kc != 0 ) { usetable_kc = 0 }
+	if ( vshift_cal != 0 ) {usetable_cal = 0 }
+	if ( vshift_ka != 0 ) {usetable_ka = 0 }
+	if ( vshift_nap != 0 ) {usetable_nap = 0 }
+	if ( vshift_ar != 0 ) {usetable_ar = 0 }
+    ***/
+
+}
+
+print "setup params done"
+
+proc scale_all_qfac() { local QSCALE
+
+    QSCALE = QKIR / 0.5 	 // using KIR fitted qfactor of 0.2, vs. default factor of 0.5.
+
+    // assume KIR is already scaled in set_params()
+    
+    forall {
+        if(ismembrane("naf") ) {
+            mqfact_naf = 3 * QSCALE
+            hqfact_naf = 3 * QSCALE
+	}
+        if(ismembrane("kas") ) qfact_kas = 9 * QSCALE
+        if(ismembrane("kaf") ) qfact_kaf = 3 * QSCALE
+        if(ismembrane("nap") ) qfact_nap = 3 * QSCALE
+        
+        if(ismembrane("kdr") ) qfact_kdr = 0.5 * QSCALE
+	
+        if(ismembrane("skkca") ) qfact_skkca = 1 * QSCALE
+        if(ismembrane("bkkca") ) q_bkkca = 1 * QSCALE
+
+        if(ismembrane("caq") ) qfact_caq = 3 * QSCALE
+        if(ismembrane("can") ) qfact_can = 3 * QSCALE
+        if(ismembrane("car") ) qfact_car = 3 * QSCALE
+        if(ismembrane("cat") ) qfact_cat = 3 * QSCALE
+        if(ismembrane("caL") ) qfact_caL = 3 * QSCALE
+        if(ismembrane("caL13") ) {
+            qfact_caL13 = 3 * QSCALE
+            hqfact_caL13 = 3 * QSCALE
+	}
+    }
+}
+
+
+proc biophys_inhomo(){}
+proc position() { local i
+  soma for i = 0, n3d()-1 {
+    pt3dchange(i, $1-x+x3d(i), $2-y+y3d(i), $3-z+z3d(i), diam3d(i))
+  }
+  x = $1  y = $2  z = $3
+}
+obfunc connect2target() { localobj nc //$o1 target point process, optional $o2 returned NetCon
+  soma nc = new NetCon(&v(1), $o1)
+  nc.threshold = 10
+  if (numarg() == 2) { $o2 = nc } // for backward compatibility
+  return nc
+}
+proc synapses() {}
+init()
+endtemplate d1msn

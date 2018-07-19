@@ -1,0 +1,951 @@
+/******  These lines are copied from ~/research/Neuron/shared/hoc/syn_params.hoc  *******************/
+
+//define these now, redefine when used
+objref stimEsyndend[20], connEsyndend[20], Esyndend[20]
+objref stimIsyndend[20], connIsyndend[20], Isyndend[20]
+objref stimEsynsoma[1], connEsynsoma[1], Esynsoma[1]
+objref stimIsynsoma[1], connIsynsoma[1], Isynsoma[1]
+objref stimEsynprox[1], connEsynprox[1], Esynprox[1]
+objref stimIsynprox[1], connIsynprox[1], Isynprox[1]
+objref stimEsyndist[1], connEsyndist[1], Esyndist[1]
+objref stimIsyndist[1], connIsyndist[1], Isyndist[1]
+
+EXTHZ = 4 //Hz //10 //
+INTHZ = 1 //Hz //65 //
+NOISE = 1
+
+ISI_EXC = 1000/INTHZ
+ISI_INH = 1000/INTHZ
+START_EXC = 50
+START_INH = 50
+
+INTERVAL = 50000000
+NSPIKES = 1
+
+//densities of AMPA, GABA are per 100um^2, 
+GABAaDENDDEN=1//10 //density of GABAa at dendrites 
+AMPADENDDEN=1//60 //density of AMPA at dendrites 
+TOTAL_GABAa_g=491.4 //nS
+TOTAL_AMPA_g =5898 //nS 
+
+
+SEEDNUM = 1
+SEED = 88 //This seed does not generate any double EPSCs
+//SEED=800
+//SEED = 65
+// This is new
+
+
+NSEG= 27
+NSEG_SPINE=3 
+
+OFFSET=50 //start 
+ONSET=50  //end of applying events
+NOISE=1
+CURRINJ=0.03 // current injected
+DT = 0.025
+TSTOP = 1000 //
+PLOTSMS=4
+
+
+// These parameter values are modified from Traub, Contreras, et al. 2005:  
+// Single-column thalamocortical network model exhibiting gamma oscillations,
+// sleep spindles and epileptogenic bursts.  J Neurophysiol 93(4):  2194-2232,
+// (2005).  PMID:  15525801.  See Appendix B, starting on page 2224.
+//
+// These are from superficial pyramid parameters reported in that reference.
+// Note some alternative conductances reported for different connection types,
+// e.g. pyramid->pyramid AMPA connections vs. stellate->pyramid connections.
+// See Traub et al. to see which connections use which conductance values.
+
+
+//
+// values for MSN model in Wolf et al. 
+//
+  AMPA_tau1 = 1.8  //(ms), time constant for AMPA
+  AMPA_tau2 = 2.7     //(ms), 
+
+  AMPA_Esyn = 0  //reversal potential 
+  AMPA_g=0.0002 // change in conductance
+
+
+
+  GABAa_g=0.0021  // 1.0nS // change in conductance; other connections used 0.05 nS, 0.1 nS
+  GABAa_Esyn = -60 //reversal potential for superficial pyramids; other neuron types in the model used -75 mV
+  GABAa_tau1 = 0.5 //  
+  GABAa_tau2 = 7.5 //  
+
+
+
+START_EXC = 100
+
+/*********************************************
+
+    input	$o1	SectionList where synapses are needed
+		$o2	vector of synapse locations
+		$3	starting time of excitation
+		$4	timing between subsequent PSPs
+*********************************************/
+func AddSynapses() { local cnt, nSyn, DELAY, ST_EXC, stopTime
+
+    nSyn = $o2.size()
+    ST_EXC = $3
+    DELAY  = $4
+
+    objref stimEsyndend[nSyn], connEsyndend[nSyn], Esyndend[nSyn]
+
+    cnt = 0
+    forsec $o1 {
+	Esyndend[cnt] = new Exp2Syn($o2.x[cnt])
+	Esyndend[cnt].tau1=AMPA_tau1  //--- ms decay time constatn
+	Esyndend[cnt].tau2=AMPA_tau2  //--- ms decay time constatn
+	Esyndend[cnt].e=AMPA_Esyn //-- mV reversal potential
+
+	stimEsyndend[cnt]= new NetStim($o2.x[cnt])
+	stimEsyndend[cnt].interval= INTERVAL
+	stimEsyndend[cnt].start= $3 + cnt*DELAY
+	stimEsyndend[cnt].noise=NOISE
+	stimEsyndend[cnt].number=1
+
+        connEsyndend[cnt] = new NetCon(stimEsyndend[cnt],Esyndend[cnt],-55,0,AMPA_g)
+
+        cnt += 1
+    }
+    stopTime = START_EXC+(nSyn+2)*DELAY
+    printf("Added %d synapses, final time %d\n",nSyn,START_EXC + nSyn*DELAY)
+
+    return stopTime
+}
+
+objref sref
+
+/*********************************************
+
+    input	$1	total number of excitatory apical synapses
+    		$2	total number of excitatory basal synapses
+		$3	starting time of excitation
+		$4	timing between subsequent PSPs
+		$o5	SectionList to which sections are added
+		$o6	vector of locations
+
+*********************************************/
+func AddExcSynapses_byNumber() { local cnt, nSyn, DELAY, ST_EXC, stopTime, SAspacing, totSA, SAcnt, numSec, cntSec, xloc
+
+		    
+    nASyn   = $1
+    nBSyn   = $2
+    nCSyn   = $3
+    nSyn = nASyn + nBSyn + nCSyn
+
+    ST_EXC = $4
+    DELAY  = $5
+
+    
+    objref stimEsyndend[nSyn], connEsyndend[nSyn], Esyndend[nSyn]
+
+    
+    soma { distance(0) }
+    $o6 = new SectionList()
+    $o7 = new Vector()
+
+    // proximal synapses first
+    if( nASyn > 0 ) {
+
+        totSA = 0
+        forsec proximal {
+	        totSA =totSA + L*3.1415926*diam
+        }
+
+        SAspacing = totSA / nASyn
+        printf("Spacing for proximal EXC synapses:  every %g = %g / %d microns ^ 2\n",SAspacing,totSA,nASyn)
+        SAcnt = 0
+        cnt = 0
+
+        /***  no excitatory synapses added to soma ***/
+        numSec = 0
+        forsec proximal { numSec += 1 }
+
+        cntSec = 0
+        forsec proximal {
+            cntSec += 1
+	    	    for(x) {
+	        SAcnt += area(x)
+	        while( SAcnt >= SAspacing ) {
+		    // add synapse here
+
+   		    sref = new SectionRef()
+		    $o6.append()
+		    $o7.append(x)
+
+		    //printf("SynLoc[%d] %s(%g) Dist %g\tCutoff %g > %g, total %g out of %g\n",cnt,secname(),x,distance(x), SAcnt,SAspacing,SAcnt+cnt*SAspacing,totSA)
+		    Esyndend[cnt] = new Exp2Syn(x)
+		    Esyndend[cnt].tau1=AMPA_tau1  //--- ms decay time constatn
+		    Esyndend[cnt].tau2=AMPA_tau2  //--- ms decay time constatn
+		    Esyndend[cnt].e=AMPA_Esyn //-- mV reversal potential
+		    
+
+
+		    stimEsyndend[cnt]= new NetStim(x)
+		    stimEsyndend[cnt].seed(SEED)
+		    nslist.append(stimEsyndend[cnt])
+		    rs = new RandomStream(cnt)
+		    rslist.append(rs)
+		    stimEsyndend[cnt].interval= INTERVAL
+		    stimEsyndend[cnt].start= 0
+		    stimEsyndend[cnt].noise=NOISE
+		    stimEsyndend[cnt].number= NSPIKES
+		    //stimEsyndend[cnt].noiseFromRandom(rs.r)
+		    rs.r.negexp(1)
+		    rs.start()
+		    
+	            connEsyndend[cnt] = new NetCon(stimEsyndend[cnt],Esyndend[cnt],-55,0,AMPA_g)
+	            connEsyndend[cnt].record(tvec, idvec, cnt)
+	            cnt += 1
+
+		    SAcnt -= SAspacing
+		    
+	        }
+    	    }
+    	 
+            // if it's the end of the SectionList and we still have a synapse to add, put it here.
+	    if( cnt < nASyn && cntSec == numSec ) {
+	        //printf("---Added %d synapses, need a total of %d\n",cnt,nSyn)
+	        while( cnt < nASyn ) {
+	            xloc = 1
+
+ 		    // add synapse here
+
+		    sref = new SectionRef()
+		    $o6.append()
+		    $o7.append(xloc)
+
+		    //printf("\t\tSynLoc[%d] %s(%g) Dist %g\n",cnt,secname(),xloc,distance(xloc))
+		    Esyndend[cnt] = new Exp2Syn(xloc)
+		    Esyndend[cnt].tau1=AMPA_tau1  //--- ms decay time constatn
+		    Esyndend[cnt].tau2=AMPA_tau2  //--- ms decay time constatn
+		    Esyndend[cnt].e=AMPA_Esyn //-- mV reversal potential
+
+	
+		    stimEsyndend[cnt]= new NetStim(x)
+		    stimEsyndend[cnt].seed(SEED)
+		    nslist.append(stimEsyndend[cnt])
+		    rs = new RandomStream(cnt)
+		    rslist.append(rs)
+		    stimEsyndend[cnt].interval= INTERVAL
+		    stimEsyndend[cnt].start= 0
+		    stimEsyndend[cnt].noise=NOISE
+		    stimEsyndend[cnt].number= NSPIKES    
+		    //stimEsyndend[cnt].noiseFromRandom(rs.r)
+		    rs.r.negexp(1)
+		    rs.start()
+		    
+	            connEsyndend[cnt] = new NetCon(stimEsyndend[cnt],Esyndend[cnt],-55,0,AMPA_g)
+	            connEsyndend[cnt].record(tvec, idvec, cnt)
+	            cnt += 1
+	            
+	        }
+            }
+        }
+        printf("Finished with proximal dendrites, added %d synapses, %g SA till next synapse\n",cnt,SAcnt)
+        }else { printf("No apical synapses added.\n") }
+
+    // now basal synapses
+    if( nBSyn > 0 ) {
+
+        totSA = 0
+        forsec middend {
+	        totSA += L*3.1415926*diam
+        }
+
+        SAspacing = totSA / nBSyn
+        printf("Spacing for middend EXC synapses:  every %g = %g / %d microns ^ 2\n",SAspacing,totSA,nBSyn)
+        SAcnt = 0
+        // note: we do NOT reinitialize 'cnt' here.
+
+        numSec = 0
+        forsec middend { numSec += 1 }
+
+        cntSec = 0
+        forsec middend {
+            cntSec += 1
+	    for(x) {
+	        SAcnt += area(x)
+	        while( SAcnt >= SAspacing ) {
+		    // add synapse here
+
+		    sref = new SectionRef()
+		    $o6.append()
+		    $o7.append(x)
+
+		    Esyndend[cnt] = new Exp2Syn(x)
+		    Esyndend[cnt].tau1=AMPA_tau1  //--- ms decay time constatn
+		    Esyndend[cnt].tau2=AMPA_tau2  //--- ms decay time constatn
+		    Esyndend[cnt].e=AMPA_Esyn //-- mV reversal potential
+
+
+		    
+		    stimEsyndend[cnt]= new NetStim(x)
+		    stimEsyndend[cnt].seed(SEED)
+		    nslist.append(stimEsyndend[cnt])
+		    rs = new RandomStream(cnt)
+		    rslist.append(rs)
+		    stimEsyndend[cnt].interval= INTERVAL
+		    stimEsyndend[cnt].start= 0
+		    stimEsyndend[cnt].noise=NOISE
+		    stimEsyndend[cnt].number= NSPIKES   
+		    //stimEsyndend[cnt].noiseFromRandom(rs.r)
+		    rs.r.negexp(1)
+		    rs.start()
+		    
+	            connEsyndend[cnt] = new NetCon(stimEsyndend[cnt],Esyndend[cnt],-55,0,AMPA_g)
+	            connEsyndend[cnt].record(tvec, idvec, cnt)
+	            cnt += 1
+
+		    SAcnt -= SAspacing
+		    
+	        }
+    	    }
+            // if it's the end of the SectionList and we still have a synapse to add, put it here.
+	    if( cnt < nSyn && cntSec == numSec ) {
+	        //printf("---Added %d synapses, need a total of %d\n",cnt,nSyn)
+	        while( cnt < nASyn+nBSyn ) {
+	            xloc = 1
+
+		    // add synapse here
+
+		    sref = new SectionRef()
+		    $o6.append()
+		    $o7.append(xloc)
+
+		    Esyndend[cnt] = new Exp2Syn(xloc)
+		    Esyndend[cnt].tau1=AMPA_tau1  //--- ms decay time constatn
+		    Esyndend[cnt].tau2=AMPA_tau2  //--- ms decay time constatn
+		    Esyndend[cnt].e=AMPA_Esyn //-- mV reversal potential
+
+
+		    
+		    stimEsyndend[cnt]= new NetStim(x)
+		    stimEsyndend[cnt].seed(SEED)
+		    nslist.append(stimEsyndend[cnt])
+		    rs = new RandomStream(cnt)
+		    rslist.append(rs)
+		    stimEsyndend[cnt].interval= INTERVAL
+		    stimEsyndend[cnt].start= 0
+		    stimEsyndend[cnt].noise=NOISE
+		    stimEsyndend[cnt].number= NSPIKES  
+		    //stimEsyndend[cnt].noiseFromRandom(rs.r)
+		    rs.r.negexp(1)
+		    rs.start()
+		    
+	            connEsyndend[cnt] = new NetCon(stimEsyndend[cnt],Esyndend[cnt],-55,0,AMPA_g)
+	            connEsyndend[cnt].record(tvec, idvec, cnt)
+	            cnt += 1
+	            
+	        }
+            }
+        }
+        printf("Finished with middend dendrites, added %d synapses, %g SA till next synapse\n",cnt,SAcnt)
+
+    } else {  printf("No Middend synapses added.\n")  }
+
+
+        // now distal synapses
+    if( nCSyn > 0 ) {
+
+        totSA = 0
+        forsec distal {
+	        totSA += L*3.1415926*diam
+        }
+
+        SAspacing = totSA / nCSyn
+        printf("Spacing for distal EXC synapses:  every %g = %g / %d microns ^ 2\n",SAspacing,totSA,nCSyn)
+        SAcnt = 0
+        // note: we do NOT reinitialize 'cnt' here.
+
+        numSec = 0
+        forsec distal { numSec += 1 }
+
+        cntSec = 0
+        forsec distal {
+            cntSec += 1
+	    for(x) {
+	        SAcnt += area(x)
+	        while( SAcnt >= SAspacing ) {
+		    // add synapse here
+
+		    sref = new SectionRef()
+		    $o6.append()
+		    $o7.append(x)
+
+		    Esyndend[cnt] = new Exp2Syn(x)
+		    Esyndend[cnt].tau1=AMPA_tau1  //--- ms decay time constatn
+		    Esyndend[cnt].tau2=AMPA_tau2  //--- ms decay time constatn
+		    Esyndend[cnt].e=AMPA_Esyn //-- mV reversal potential
+
+		    
+		    stimEsyndend[cnt]= new NetStim(x)
+		    stimEsyndend[cnt].seed(SEED)
+		    nslist.append(stimEsyndend[cnt])
+		    rs = new RandomStream(cnt)
+		    rslist.append(rs)
+		    stimEsyndend[cnt].interval= INTERVAL
+		    stimEsyndend[cnt].start= 0
+		    stimEsyndend[cnt].noise=NOISE
+		    stimEsyndend[cnt].number= NSPIKES   
+		    //stimEsyndend[cnt].noiseFromRandom(rs.r)
+		    rs.r.negexp(1)
+		    rs.start()
+		    
+	            connEsyndend[cnt] = new NetCon(stimEsyndend[cnt],Esyndend[cnt],-55,0,AMPA_g)
+	            connEsyndend[cnt].record(tvec, idvec, cnt)
+	            cnt += 1
+
+		    SAcnt -= SAspacing
+		    
+	        }
+    	    }
+            // if it's the end of the SectionList and we still have a synapse to add, put it here.
+	    if( cnt < nSyn && cntSec == numSec ) {
+	        //printf("---Added %d synapses, need a total of %d\n",cnt,nSyn)
+	        while( cnt < nSyn ) {
+	            xloc = 1
+
+		    // add synapse here
+
+		    sref = new SectionRef()
+		    $o6.append()
+		    $o7.append(xloc)
+		    Esyndend[cnt] = new Exp2Syn(xloc)
+		    Esyndend[cnt].tau1=AMPA_tau1  //--- ms decay time constatn
+		    Esyndend[cnt].tau2=AMPA_tau2  //--- ms decay time constatn
+		    Esyndend[cnt].e=AMPA_Esyn //-- mV reversal potential
+
+		    
+		    stimEsyndend[cnt]= new NetStim(x)
+		    stimEsyndend[cnt].seed(SEED)
+		    nslist.append(stimEsyndend[cnt])
+		    rs = new RandomStream(cnt)
+		    rslist.append(rs)
+		    stimEsyndend[cnt].interval= INTERVAL
+		    stimEsyndend[cnt].start= 0
+		    stimEsyndend[cnt].noise=NOISE
+		    stimEsyndend[cnt].number= NSPIKES  
+		    //stimEsyndend[cnt].noiseFromRandom(rs.r)
+		    rs.r.negexp(1)
+		    rs.start()
+		    
+	            connEsyndend[cnt] = new NetCon(stimEsyndend[cnt],Esyndend[cnt],-55,0,AMPA_g)
+	            connEsyndend[cnt].record(tvec, idvec, cnt)
+	            cnt += 1
+	            
+	        }
+            }
+        }
+        printf("Finished with distal dendrites, added %d synapses, %g SA till next synapse\n",cnt,SAcnt)
+
+    } else {  printf("No distal synapses added.\n")  }
+    
+    printf("Added %d excitatory synapses, final time %d\n",nSyn,START_EXC + nSyn*DELAY)
+    
+   
+
+//    for i = 0,nSyn-1 {
+    
+//    for j=0, tvec.size-1 printf("%7.3f \t%d\n", tvec.x(j), idvec.x(j))
+//    }
+    
+    return nSyn
+}
+
+
+
+
+
+
+
+
+/*********************************************
+
+    input	$1	base density of inhibitory synapses
+		$2	maximal distance from soma for dendritic inhib synapses
+		$3	starting time of excitation
+		$4	timing between subsequent PSPs
+		$o5	SectionList to which sections are added
+		$o6	vector of locations
+		$7	count of sections added
+		$8	inhib synapse density on proximal spines
+		$9	inhib synapse density on distal spines
+		$10	if 0, do only apical; if 1, do only basal; else do both.
+
+    Specify a baseline density of inhibitory synapse throughout dendrites, and 
+    extra density terms to represent inhib synapses that would have been on 
+    dendritic spines.  Distribute these uniformly in their respective regions.
+
+*********************************************/
+func AddInhSynapses() { local cnt, nSyn, DELAY, ST_EXC, stopTime, Lspacing, totSA, prxSA, Lcnt, numSec, cntSec, xloc, nClose, nFar, baseDens, prxSpDens, dstSpDens, totL, prxL, dstL, lastX
+
+    baseDens = $1
+    ST_EXC = $3
+    DELAY  = $4
+     printf("compute what %g\n",$2)
+    
+    somaL=soma.L
+    forsec proximal {prxL=prxL+L/nseg n1+=1}
+    forsec middend {midL=midL+L/nseg n2+=1}
+    forsec distal {dstL=dstL+L/nseg n3+=1}
+    totL=prxL+midL+dstL
+
+
+    prxSpDens = $8
+    dstSpDens = $9
+
+    //nClose = int(prxL * (baseDens + prxSpDens) + 0.5 )
+    //nFar   = int(dstL * (baseDens + dstSpDens) + 0.5 )
+    //This is default condition, 6 proximal, 12 medial and 24 distal. 
+    nClose=16
+    nProx=n1*3
+    nMid=0
+    nFar=0
+    
+    nSyn = nClose + nProx + nMid + nFar
+    //printf("Inh syn density:  %g base/t%g prox Spines/t%g dist Spines\n",baseDens,prxSpDens,dstSpDens)
+    printf("Want a total of %d synapses: %d soma, %d in proximal, %d in medial and %d in distal dendrites.\n",nSyn,nClose,nProx,nMid,nFar)
+
+
+    
+    objref stimIsyndend[nSyn+1], connIsyndend[nSyn+1], Isyndend[nSyn+1]
+    $o5 = new SectionList()
+    $o6 = new Vector()
+
+    soma { distance(0) }
+
+    numSec = 0
+    if( $10 == 0 ) { forsec proximal { numSec += 1 }
+    } else {
+        if( $10 ==1 ) {  forsec middend { numSec += 1 }
+        } else {
+            forsec distal { numSec += 1 }
+        }
+    }
+
+    /**** STEP 1:  distribute a proportion the synapses on the soma   ****/
+
+    Lspacing = somaL / nClose
+    printf("Spacing for soma INH synapses:  every %g = %g / %d microns of length\n",Lspacing,somaL,nClose)
+
+    Lcnt = 0
+    cnt = 0
+
+    /****  this section is the same regardless of whether we consider apical or basal only, or all dendrites ****/
+    forsec "soma" { 
+
+
+	    Lcnt += L / nseg
+	    while( Lcnt >= Lspacing ) {
+		sref = new SectionRef()
+		$o5.append()
+		$o6.append(x)
+
+		// add synapse here
+		//printf("SOMA:  SynLoc %s(%g)\tCutoff %g > %g, total %g out of %g\n",secname(),x,Lcnt,Lspacing,Lcnt+cnt*Lspacing,totL)
+		Isyndend[cnt] = new Exp2Syn(x)  	
+		Isyndend[cnt].tau1=GABAa_tau1  //--- ms decay time constatn
+		Isyndend[cnt].tau2=GABAa_tau2  //--- ms decay time constatn
+		Isyndend[cnt].e=GABAa_Esyn //-- mV reversal potential
+
+		stimIsyndend[cnt]= new NetStim(x)
+		stimIsyndend[cnt].seed(SEED)
+		nslist.append(stimIsyndend[cnt])
+		rs = new RandomStream(cnt)
+		rslist.append(rs)
+		stimIsyndend[cnt].interval= INTERVAL
+		stimIsyndend[cnt].start= 0
+		stimIsyndend[cnt].noise=NOISE
+		stimIsyndend[cnt].number=NSPIKES
+		rs.r.negexp(1)
+		rs.start()
+
+	        connIsyndend[cnt] = new NetCon(stimIsyndend[cnt],Isyndend[cnt],-55,0,GABAa_g)
+	        connIsyndend[cnt].record(tvec, idvec, cnt)
+	        cnt +=1
+
+		Lcnt -= Lspacing
+
+	    }
+
+
+    }
+    printf("Finished with soma, added %d synapses, %g L till next synapse\n",cnt,Lcnt)
+
+    		Lspacing = prxL / nProx
+    		printf("Spacing for proximal INH synapses:  every %g = %g / %d microns of length\n",Lspacing,prxL,nProx)
+    		Lcnt = 0
+    		cnt_prox=0
+    		cntSec = 0
+        	numSec = 0
+        	forsec proximal { numSec += 1 }
+
+            forsec proximal {
+                cntSec += 1
+	        for(x) {
+
+     	            Lcnt += L / nseg
+	            while( Lcnt >= Lspacing && cnt_prox < nProx ) {
+		        // add synapse here
+
+ 		        sref = new SectionRef()
+		        $o5.append()
+		        $o6.append(x)
+
+		        Isyndend[cnt] = new Exp2Syn(x)  	
+		        Isyndend[cnt].tau1=GABAa_tau1  //--- ms decay time constatn
+		        Isyndend[cnt].tau2=GABAa_tau2  //--- ms decay time constatn
+		        Isyndend[cnt].e=GABAa_Esyn //-- mV reversal potential
+
+		        stimIsyndend[cnt]= new NetStim(x)
+		        stimIsyndend[cnt].seed(SEED)
+		        nslist.append(stimIsyndend[cnt])
+		        rs = new RandomStream(cnt)
+		        rslist.append(rs)
+		        stimIsyndend[cnt].interval= INTERVAL
+		        stimIsyndend[cnt].start= 0
+		        stimIsyndend[cnt].noise=NOISE
+		        stimIsyndend[cnt].number=NSPIKES
+		        rs.r.negexp(1)
+		        rs.start()
+
+		        connIsyndend[cnt] = new NetCon(stimIsyndend[cnt],Isyndend[cnt],-55,0,GABAa_g)
+		        connIsyndend[cnt].record(tvec, idvec, cnt)
+		        cnt +=1
+		        cnt_prox+=1
+		        Lcnt -= Lspacing
+	            }
+    	        }
+                // if it's the end of the SectionList and we still have a synapse to add, put it here.
+	        if( cnt_prox < nProx && cntSec == numSec ) {
+	            while( cnt_prox < nProx ) {
+	                xloc = 1
+
+		        // add synapse here
+
+		        sref = new SectionRef()
+		        $o5.append()
+		        $o6.append(xloc)
+
+		        Isyndend[cnt] = new Exp2Syn(x)  	
+		        Isyndend[cnt].tau1=GABAa_tau1  //--- ms decay time constatn
+		        Isyndend[cnt].tau2=GABAa_tau2  //--- ms decay time constatn
+		        Isyndend[cnt].e=GABAa_Esyn //-- mV reversal potential
+
+		        stimIsyndend[cnt]= new NetStim(x)
+		        stimIsyndend[cnt].seed(SEED)
+		        nslist.append(stimIsyndend[cnt])
+		        rs = new RandomStream(cnt)
+		        rslist.append(rs)
+		        stimIsyndend[cnt].interval= INTERVAL
+		        stimIsyndend[cnt].start= 0
+		        stimIsyndend[cnt].noise=NOISE
+		        stimIsyndend[cnt].number=NSPIKES
+		        rs.r.negexp(1)
+		        rs.start()
+
+		        connIsyndend[cnt] = new NetCon(stimIsyndend[cnt],Isyndend[cnt],-55,0,GABAa_g)
+		        connIsyndend[cnt].record(tvec, idvec, cnt)
+		        cnt +=1
+	            }
+                }
+            }
+            
+            printf("Finished with proximal, added %d synapses, %g L till next synapse\n",cnt,Lcnt)
+            while (nMid >=1) {
+            Lspacing = midL / nMid
+    		printf("Spacing for medial INH synapses:  every %g = %g / %d microns of length\n",Lspacing,midL,nMid)
+    		Lcnt = 0
+    		cnt_mid=0
+    		cntSec = 0
+        	numSec = 0
+        	forsec middend { numSec += 1 }
+
+            forsec middend {
+                cntSec += 1
+	        for(x) {
+
+     	            Lcnt += L / nseg
+	            while( Lcnt >= Lspacing && cnt_mid < nMid ) {
+		        // add synapse here
+
+ 		        sref = new SectionRef()
+		        $o5.append()
+		        $o6.append(x)
+
+		        Isyndend[cnt] = new Exp2Syn(x)  	
+		        Isyndend[cnt].tau1=GABAa_tau1  //--- ms decay time constatn
+		        Isyndend[cnt].tau2=GABAa_tau2  //--- ms decay time constatn
+		        Isyndend[cnt].e=GABAa_Esyn //-- mV reversal potential
+
+		        stimIsyndend[cnt]= new NetStim(x)
+		        stimIsyndend[cnt].seed(SEED)
+		        nslist.append(stimIsyndend[cnt])
+		        rs = new RandomStream(cnt)
+		        rslist.append(rs)
+		        stimIsyndend[cnt].interval= INTERVAL
+		        stimIsyndend[cnt].start= 0
+		        stimIsyndend[cnt].noise=NOISE
+		        stimIsyndend[cnt].number=NSPIKES
+		        rs.r.negexp(1)
+		        rs.start()
+
+		        connIsyndend[cnt] = new NetCon(stimIsyndend[cnt],Isyndend[cnt],-55,0,GABAa_g)
+		        connIsyndend[cnt].record(tvec, idvec, cnt)
+		        cnt +=1
+		        cnt_mid+=1
+		        Lcnt -= Lspacing
+	            }
+    	        }
+                // if it's the end of the SectionList and we still have a synapse to add, put it here.
+	        if( cnt_mid < nMid && cntSec == numSec ) {
+	            while( cnt_mid < nMid ) {
+	                xloc = 1
+
+		        // add synapse here
+
+		        sref = new SectionRef()
+		        $o5.append()
+		        $o6.append(xloc)
+
+		        Isyndend[cnt] = new Exp2Syn(x)  	
+		        Isyndend[cnt].tau1=GABAa_tau1  //--- ms decay time constatn
+		        Isyndend[cnt].tau2=GABAa_tau2  //--- ms decay time constatn
+		        Isyndend[cnt].e=GABAa_Esyn //-- mV reversal potential
+
+		        stimIsyndend[cnt]= new NetStim(x)
+		        stimIsyndend[cnt].seed(SEED)
+		        nslist.append(stimIsyndend[cnt])
+		        rs = new RandomStream(cnt)
+		        rslist.append(rs)
+		        stimIsyndend[cnt].interval= INTERVAL
+		        stimIsyndend[cnt].start= 0
+		        stimIsyndend[cnt].noise=NOISE
+		        stimIsyndend[cnt].number=NSPIKES
+		        rs.r.negexp(1)
+		        rs.start()
+
+		        connIsyndend[cnt] = new NetCon(stimIsyndend[cnt],Isyndend[cnt],-55,0,GABAa_g)
+		        connIsyndend[cnt].record(tvec, idvec, cnt)
+		        cnt +=1
+	            }
+                }
+            }
+            printf("Finished with medial, added %d synapses, %g L till next synapse\n",cnt,Lcnt)
+            }
+            while (nFar>=1) {
+            Lspacing = dstL / nFar
+    		printf("Spacing for distal INH synapses:  every %g = %g / %d microns of length\n",Lspacing,dstL,nFar)
+    		Lcnt = 0
+    		cnt_dis=0
+    		cntSec = 0
+        	numSec = 0
+        	forsec distal { numSec += 1 }
+	
+            forsec distal {
+                cntSec += 1
+	        for(x) {
+
+
+     	            Lcnt += L / nseg
+	            while( Lcnt >= Lspacing && cnt_dis < nFar ) {
+		        // add synapse here
+
+ 		        sref = new SectionRef()
+		        $o5.append()
+		        $o6.append(x)
+
+		        Isyndend[cnt] = new Exp2Syn(x)  	
+		        Isyndend[cnt].tau1=GABAa_tau1  //--- ms decay time constatn
+		        Isyndend[cnt].tau2=GABAa_tau2  //--- ms decay time constatn
+		        Isyndend[cnt].e=GABAa_Esyn //-- mV reversal potential
+
+		        stimIsyndend[cnt]= new NetStim(x)
+		        stimIsyndend[cnt].seed(SEED)
+		        nslist.append(stimIsyndend[cnt])
+		        rs = new RandomStream(cnt)
+		        rslist.append(rs)
+		        stimIsyndend[cnt].interval= INTERVAL
+		        stimIsyndend[cnt].start= 0
+		        stimIsyndend[cnt].noise=NOISE
+		        stimIsyndend[cnt].number=NSPIKES
+		        rs.r.negexp(1)
+		        rs.start()
+
+		        connIsyndend[cnt] = new NetCon(stimIsyndend[cnt],Isyndend[cnt],-55,0,GABAa_g)
+		        connIsyndend[cnt].record(tvec, idvec, cnt)
+		        cnt +=1
+		        cnt_dis+=1
+		        Lcnt -= Lspacing
+	            }
+    	        }
+                // if it's the end of the SectionList and we still have a synapse to add, put it here.
+
+                if( cnt_dis < nFar && cntSec == numSec ) {
+	            while( cnt_dis < nFar ) {
+	                xloc = 1
+
+		        // add synapse here
+
+		        sref = new SectionRef()
+		        $o5.append()
+		        $o6.append(xloc)
+
+		        Isyndend[cnt] = new Exp2Syn(x)  	
+		        Isyndend[cnt].tau1=GABAa_tau1  //--- ms decay time constatn
+		        Isyndend[cnt].tau2=GABAa_tau2  //--- ms decay time constatn
+		        Isyndend[cnt].e=GABAa_Esyn //-- mV reversal potential
+
+		        stimIsyndend[cnt]= new NetStim(x)
+		        stimIsyndend[cnt].seed(SEED)
+		        nslist.append(stimIsyndend[cnt])
+		        rs = new RandomStream(cnt)
+		        rslist.append(rs)
+		        stimIsyndend[cnt].interval= INTERVAL
+		        stimIsyndend[cnt].start= 0
+		        stimIsyndend[cnt].noise=NOISE
+		        stimIsyndend[cnt].number=NSPIKES
+		        rs.r.negexp(1)
+		        rs.start()
+
+		        connIsyndend[cnt] = new NetCon(stimIsyndend[cnt],Isyndend[cnt],-55,0,GABAa_g)
+		        connIsyndend[cnt].record(tvec, idvec, cnt)
+		        cnt +=1
+	            }
+                }
+            }
+
+
+        printf("Finished with distal dendrites, added %d synapses, %g length till next synapse\n",cnt,Lcnt)    
+        }
+
+    
+    stopTime = START_EXC+(nSyn+2)*100
+    printf("Added %d inhibitory synapses, final time %d\n",nSyn,START_EXC + nSyn*DELAY)
+
+    $7 = cnt
+  
+    return nSyn
+}
+
+
+
+
+
+proc SynapsesOff() { local i
+
+    for i = 0, $1-1 {
+        stimEsyndend[i].start = 70
+    }
+}
+
+proc SynapseOn() {
+    stimEsyndend[$1].start = $2
+}
+
+
+
+/********
+	input   $1	value of gAMPA
+		$2	number of synapses
+********/
+proc adjust_gAMPA() {  local i
+
+    for i = 0, $2-1 {
+	connEsyndend[i].weight = $1
+    }
+}
+
+
+/********
+	input   $1	value of gAMPA
+		$2	number of synapses
+********/
+proc adjust_gGABA() {  local i
+
+    for i = 0, $2-1 {
+	connIsyndend[i].weight = $1
+    }
+}
+
+
+
+/********
+	input   $1	value of tau1 for Exp2Syn
+		$2	number of synapses
+********/
+proc adjust_tau1() {  local i
+
+    for i = 0, $2-1 {
+	Esyndend[i].tau1 = $1
+    }
+}
+
+
+
+/********
+	input   $1	value of tau1 for Exp2Syn
+		$2	number of synapses
+********/
+proc adjust_tau2() {  local i
+
+    for i = 0, $2-1 {
+	Esyndend[i].tau2 = $1
+    }
+}
+
+
+
+
+/********
+	input   $1	value of tau1 for Exp2Syn
+		$2	number of synapses
+********/
+proc adjust_Itau1() {  local i
+
+    for i = 0, $2-1 {
+	Isyndend[i].tau1 = $1
+    }
+}
+
+
+
+/********
+	input   $1	value of tau1 for Exp2Syn
+		$2	number of synapses
+********/
+proc adjust_Itau2() {  local i
+
+    for i = 0, $2-1 {
+	Isyndend[i].tau2 = $1
+    }
+}
+
+
+/******************
+	input 	$1 	max distance to count, or -1 if full dendrites only should be counted
+******************/
+func countSA() { local sa
+
+    sa = 0
+
+    if( $1 >= 0 ) { forsec "soma" for(x) sa += area(x) }
+
+    forsec dendritic {
+	for(x) {
+            if( $1< 0 ||  distance(x) <= $1 ) {
+                //printf("%s\t%g\t%g\t%g\n",secname(), x, distance(x), area(x) )
+		sa += area(x)
+	    }
+        }
+    }
+
+    return sa
+}
+
+

@@ -1,0 +1,116 @@
+/**** This is from the Evans et al. (2012) modelDB entry.
+**    Copied here to the Rumbell optimization code.
+**      
+**    hs 1/23/17
+**
+*****/
+
+
+//****************************************************************************
+// These are the default parameters for creation of the MSP cell.  This file
+// is usually called by hoc/nacb_main.hoc
+
+
+cai0_ca_ion = 0.001		// mM, Churchill 1998
+cao0_ca_ion = 5			// mM, Churchill 1998 - gives eca = 100 mV
+cali0_cal_ion = 0.001		// mM, Churchill 1998
+calo0_cal_ion = 5			// mM, Churchill 1998 - gives eca = 100 mV
+celsius = 34			// degC
+
+global_ra = 100		// not really sure what this is
+RA = 100			// ohm-cm - constant for whole cell
+CM = 1				// uF-cm2 - constant for whole cell
+G_PAS = 1.15e-5			// S/cm2
+E_PAS = -70			// mV
+
+G_NAF = 9		// soma only
+G_NAFM = 0.273	// mid
+G_NAFD = 0.00975	// distal
+
+G_NAP = 0
+G_NAPD = 0
+G_KIR = 0.0008		// S/cm2
+G_KAS = 0.03601		// soma & prox dends; s/cm2
+G_KASD = 0.003893	// mid & distal dends; S/cm2
+G_KAF = 0.0765 		// soma & prox dends; S/cm2
+G_KAFM = 0.0168	// mid dends; S/cm2
+G_KAFD = 0.0112	// dis dens; S/cm2
+G_KRP = 0.000604	// in this case it is KDR
+G_BKKCA = 0.001		// 
+G_SKKCA = 0.0002
+
+G_NAF_AIS = 9
+G_KRP_AIS = 0.000604
+
+CAINF = 1e-5			// mM, steady state intracell ca conc.
+TAUR = 43			// ms, time const of ca diffusion - Jackson 2003
+CA_DRIVE = 10000
+CA_PUMP = 0.02
+
+caNMDA = 0.1
+P_CAL = 1.26e-7			// cm/s
+P_CALD = 1.26e-7			// cm/s
+P_CAL13 = 1.59e-7		//1.7e-6		// cm/s
+P_CAL13D = 1.59e-7		//1.7e-6		// cm/s
+P_CAN = 3.75e-7			// cm/s
+P_CAQ = 0			// cm/s
+P_CAR = 9.75e-7			// cm/s
+P_CAT = 8.81e-9			// cm/s	4e-7
+
+EK = -90
+ENA = 50
+
+NET_N = 1e10
+
+G_AMPA = 8.5e-4		//350e-6		//8.81e-4
+G_NMDA = 12.2e-5	// 9.2e-5	
+G_GABA = 0.0021		//4300e-6	//0.0027
+
+AMPA_WT = 1
+NMDA_WT = 1
+GABA_WT = 1
+
+NOISE = 1
+
+NGLU = 84
+NGABA = 84
+NSYN = NGABA + NGLU
+//****************************************************************************
+
+// factors for adding the Hay axon
+CM_MYELINFAC = 0.02		// Hay myelin had cm=0.02, cm=1 in AIS/soma
+AXON_MSHIFT  = 10
+AXON_HSHIFT  = 5
+AXON_MSLOPEFAC = 1.29		// Hay NaT m_slope was 9/mV in axon, 7/mV in soma
+SOMA_MVHALF_NAF = -25
+SOMA_MSLOPE_NAF = 9.2
+SOMA_MSHIFT_NAF = 0
+SOMA_HVHALF_NAF = -62
+SOMA_HSLOPE_NAF = 6
+SOMA_HSHIFT_NAF = 0
+
+// PICK UP HERE.
+
+/****************************************************************************
+//
+//  These values were optimized by HS's subTH runs on 1/23/17, including the -170 and -220 pA injections, and optimizing the KIR kinetics.
+//
+//  Results found on redrocks, in EvansOPTMZ/output/
+
+1449	  0.0001416654533628 	-78.8056554521021440 	3.0000000000056533 	0.0008276674719747 	1.5651184339997399 	59.9999999999979039 	      0.99
+
+************************************/
+
+G_PAS = 0.0000298727
+E_PAS = -77.7026781841
+CM    = 1.0140594835
+G_KIR = 0.0010000000
+QKIR  = 0.2000000000	// from Evans et al, default Q10 factor was 0.5
+SHKIR = 80.3526367767	// from Evans et al, default mshift was 50
+
+V0 = -80
+
+P_CAQ = 0			// cm/s - turn this off, Evans excluded it.
+G_NAP = 0		// soma only
+G_NAPD = 0	// all dends, according to Evans et al. paper
+
