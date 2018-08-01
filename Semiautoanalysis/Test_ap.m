@@ -1,6 +1,6 @@
 clear
 clc
-Neuronlist={'Apr18IR4c'};
+Neuronlist={'Apr18IR4d'};
 
 for neuron_count=1:length(Neuronlist)
 % set default values to all the outputs to 0 so in the file if anything is

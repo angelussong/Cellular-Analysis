@@ -1,6 +1,6 @@
 clear
 clc
-Neuronlist={'Apr18IR4b'};
+Neuronlist={'Apr18IR4d'};
 
 for neuron_count=1:length(Neuronlist)
 % set default values to all the outputs to 0 so in the file if anything is
@@ -351,28 +351,28 @@ cd(['../',Neuronlist{neuron_count},'_figs']);
 saveas(gcf,[Neuronlist{neuron_count},'_High_RN.png']);
 saveas(gcf,[Neuronlist{neuron_count},'_High_RN.fig']);
 close;
-% Section 3.5 Compute sag
-i_hi=1;
-TraceHigh=eval([hiname_template,num2str(i_hi),'_1']);
-CurHigh=eval([hiname_template,num2str(i_hi),'_2']);
-Cur_sag=roundn(mean(CurHigh(5000:10000,2))*10^12,1);
-v_ap=TraceHigh(:,2).*1000;
-t_ap=TraceHigh(:,1).*1000;
-[sag_v id_sag]=min(v_ap);
-rnfit_start=21439;%floor(0.45*l_rn);
-rnfit_end=23949;%floor(0.55*l_rn);
-stable_v=mean(v_ap(rnfit_start:rnfit_end));
-sag=sag_v-stable_v;
-figure()
-plot(t_ap,v_ap);
-hold on;
-plot(t_ap(id_sag),v_ap(id_sag),'ro');
-text(t_ap(id_sag),v_ap(id_sag)+20,'This is the sag point');
-title(['Sag is computed at ',num2str(Cur_sag),'pA'])
-xlabel('Time (ms)');
-ylabel('Vm (mV)');
-saveas(gcf,[Neuronlist{neuron_count},'sag.png']);
-close;
+% % Section 3.5 Compute sag
+% i_hi=1;
+% TraceHigh=eval([hiname_template,num2str(i_hi),'_1']);
+% CurHigh=eval([hiname_template,num2str(i_hi),'_2']);
+% Cur_sag=roundn(mean(CurHigh(5000:10000,2))*10^12,1);
+% v_ap=TraceHigh(:,2).*1000;
+% t_ap=TraceHigh(:,1).*1000;
+% [sag_v id_sag]=min(v_ap);
+% rnfit_start=21439;%floor(0.45*l_rn);
+% rnfit_end=23949;%floor(0.55*l_rn);
+% stable_v=mean(v_ap(rnfit_start:rnfit_end));
+% sag=sag_v-stable_v;
+% figure()
+% plot(t_ap,v_ap);
+% hold on;
+% plot(t_ap(id_sag),v_ap(id_sag),'ro');
+% text(t_ap(id_sag),v_ap(id_sag)+20,'This is the sag point');
+% title(['Sag is computed at ',num2str(Cur_sag),'pA'])
+% xlabel('Time (ms)');
+% ylabel('Vm (mV)');
+% saveas(gcf,[Neuronlist{neuron_count},'sag.png']);
+% close;
 hi_mahp=hi_mahp/num_aplevel;
 hi_sahp=hi_sahp/num_aplevel;
 else
@@ -511,6 +511,30 @@ cd(['../',Neuronlist{neuron_count},'_figs']);
 saveas(gcf,[Neuronlist{neuron_count},'_Low_RN.png']);
 saveas(gcf,[Neuronlist{neuron_count},'_Low_RN.fig']);
 close;
+
+% Section 4.5 Compute sag
+i_low=1;
+TraceLow=eval([hiname_template,num2str(i_low),'_1']);
+CurLow=eval([hiname_template,num2str(i_low),'_2']);
+Cur_sag=roundn(mean(CurLow(5000:10000,2))*10^12,1);
+v_ap=TraceLow(:,2).*1000;
+t_ap=TraceLow(:,1).*1000;
+[sag_v id_sag]=min(v_ap);
+rnfit_start=21439;%floor(0.45*l_rn);
+rnfit_end=23949;%floor(0.55*l_rn);
+stable_v=mean(v_ap(rnfit_start:rnfit_end));
+sag=sag_v-stable_v;
+figure()
+plot(t_ap,v_ap);
+hold on;
+plot(t_ap(id_sag),v_ap(id_sag),'ro');
+text(t_ap(id_sag),v_ap(id_sag)+20,'This is the sag point');
+title(['Sag is computed at ',num2str(Cur_sag),'pA'])
+xlabel('Time (ms)');
+ylabel('Vm (mV)');
+saveas(gcf,[Neuronlist{neuron_count},'sag.png']);
+close;
+
 low_mahp=low_mahp/num_aplevel;
 low_sahp=low_mahp/num_aplevel;
 else

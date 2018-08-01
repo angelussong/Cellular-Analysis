@@ -7,7 +7,7 @@ AP_starttemp=id_dv(yest);
 lAP_temp=length(AP_starttemp);
 AP_start=zeros(lAP_temp,1);
 for j=1:lAP_temp
-    [maxd2v id_d2v]=max(d2v_ap(AP_starttemp(j):AP_starttemp(j)+15));
+    [maxd2v id_d2v]=max(d2v_ap(AP_starttemp(j):min((AP_starttemp(j)+15),length(d2v_ap))));
     if(maxd2v>=75)
     AP_start(j)=AP_starttemp(j)+id_d2v-1;
     end
