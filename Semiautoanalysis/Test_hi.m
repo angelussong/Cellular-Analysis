@@ -1,6 +1,6 @@
 clear
 clc
-Neuronlist={'Apr18IR4d','Mar10IR1d'};
+Neuronlist={'Jun14IR3f'};
 for neuron_count=1:length(Neuronlist)
 
 file_High=sprintf([Neuronlist{neuron_count},'-HighRn.mat']);
@@ -38,7 +38,7 @@ min_v=100;
 for i_hi=1:N_High
 TraceHigh=eval([hiname_template,num2str(i_hi),'_1']);
 Trace_cur=eval([hiname_template,num2str(i_hi),'_2']);
-Cur_temp=roundn(mean(Trace_cur(5000:10000,2))*10^12,1);
+Cur_temp=ceil(mean(Trace_cur(5000:10000,2))*10^12/20)*20;
 v_ap=TraceHigh(:,2).*1000;
 if((max(v_ap)>0)&&(Cur_temp>0))
     num_aplevel=num_aplevel+1;
@@ -56,7 +56,7 @@ Trace_cur=eval([hiname_template,num2str(i_hi),'_2']);
 %5000 and 10000ms, round up to eliminate the single digit
 v_ap=TraceHigh(:,2).*1000;
 t_ap=TraceHigh(:,1).*1000;
-Cur(i_hi)=roundn(mean(Trace_cur(5000:10000,2))*10^12,1);
+Cur(i_hi)=ceil(mean(Trace_cur(5000:10000,2))*10^12/20)*20;
 if((max(v_ap)>0)&&(Cur(i_hi)>0))
     pos_ap=pos_ap+1;
     l=length(v_ap);

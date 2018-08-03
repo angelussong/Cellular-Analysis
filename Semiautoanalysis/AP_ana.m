@@ -1,22 +1,22 @@
 function [thre pe ampl riset decayt halft]=AP_ana(Neuron_name,t_ap,v_ap,dv_ap,d2v_ap,dv_thre)
-id_dvl = dv_ap>=dv_thre;
-id_dvl(1) = 0;
-id_dv = find(id_dvl);
-yest = dv_ap(id_dv-1)<dv_thre; 
-AP_starttemp=id_dv(yest);
-lAP_temp=length(AP_starttemp);
-AP_start=zeros(lAP_temp,1);
-for j=1:lAP_temp
-    [maxd2v id_d2v]=max(d2v_ap(AP_starttemp(j):min((AP_starttemp(j)+15),length(d2v_ap))));
-    if(maxd2v>=75)
-    AP_start(j)=AP_starttemp(j)+id_d2v-1;
-    end
+
+[peak_temp id_peaktemp]=findpeaks(v_ap);
+ap_peaktemp=find(peak_temp>0);
+num_ptemp=length(find(peak_temp>0));
+t_aptemp=t_ap(id_peaktemp(ap_peaktemp));
+v_aptemp=v_ap(id_peaktemp(ap_peaktemp));
+
+id_peakap=id_peaktemp(ap_peaktemp);
+AP_start=zeros(num_ptemp,1);
+
+for i=1:num_ptemp
+    [max_dv id_maxdv]=max(dv_ap(id_peakap(i)-10:id_peakap(i)));
+    AP_start(i)=id_peakap(i)-10+id_maxdv-5;
 end
-AP_start=nonzeros(AP_start);
+% plot(t_ap,v_ap);
+% hold on;
+% plot(t_ap(AP_start),v_ap(AP_start),'o')
 
-
-%%%%%%%%Criteria for doublet
-%%%%%%%%between two threshold points, the time does not exceed 20ms. 
 l_tmp=length(AP_start);
 ind_tmp=[];
 for i=1:l_tmp-1
@@ -27,21 +27,16 @@ for i=1:l_tmp-1
         ind_tmp=[i ind_tmp];
     end
 end
-
 AP_start(ind_tmp)=[];
 
 l_tmp=length(AP_start);
-ind_tmp2=[];
-for i=1:l_tmp-1
-temp_peak=findpeaks(v_ap(AP_start(i):AP_start(i+1)));
-if (length(find(temp_peak>0))>1)
-    ind_tmp2=[i ind_tmp2];
+ind_tmp3=[];
+for i=1:l_tmp
+    if((t_ap(AP_start(i))>=2000)||(t_ap(AP_start(i))<=20))
+        ind_tmp3=[i ind_tmp3];
+    end
 end
-end
-% t_ap(AP_start)
-% ind_tmp
-% stop;
-AP_start(ind_tmp2)=[];
+AP_start(ind_tmp3)=[];
 
 n_AP=length(AP_start);
 l_AP=length(1:n_AP);
@@ -93,13 +88,23 @@ end
     fclose(f_ap);
 %just return the first index, which corresponds to the second AP (first one
 %being a doublet or unstable). 
-
-thre=v_threh(2);
-pe=ap_peak(2);
-ampl=ap_amp(2);
-riset=ap_rise(2);
-decayt=ap_decay(2);
-halft=ap_half(2);
+if(length(v_threh)>=2)
+    thre=v_threh(2);
+    pe=ap_peak(2);
+    ampl=ap_amp(2);
+    riset=ap_rise(2);
+    decayt=ap_decay(2);
+    halft=ap_half(2);
+    i=2;
+else
+    thre=v_threh(1);
+    pe=ap_peak(1);
+    ampl=ap_amp(1);
+    riset=ap_rise(1);
+    decayt=ap_decay(1);
+    halft=ap_half(1);
+    i=1;
+end
 ttl0=sprintf('Measurement for 2nd AP ');
 ttl1=sprintf('threshold%g\t peak%g\t',thre,pe);
 ttl2=sprintf('amp%g\t rise%g\t',ampl,riset);
@@ -109,7 +114,6 @@ title('Superimposed APs');
 xlabel('Time (ms)');
 ylabel('Vm (mV)');
 
-i=2;
 v_thre=v_ap(AP_start(i));
 if (length(AP_start)>2)
 vap_temp=v_ap(AP_start(i):AP_start(i+1));

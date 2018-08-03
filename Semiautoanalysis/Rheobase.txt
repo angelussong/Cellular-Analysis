@@ -1,0 +1,6 @@
+Neuron_name	Rheobase
+June18IR3b	2.141472e+02
+June18IR3b	2.141472e+02
+Jun19IR4c	Nan
+Jun19IR4c	1.344637e+01
+Jun19IR4c	1.344637e+01

@@ -1,6 +1,6 @@
 clear
 clc
-Neuronlist={'Apr18IR4d'};
+Neuronlist={'Jun14IR3f'};
 
 for neuron_count=1:length(Neuronlist)
 % set default values to all the outputs to 0 so in the file if anything is
@@ -265,7 +265,7 @@ min_v=100;
 for i_hi=1:N_High
 TraceHigh=eval([hiname_template,num2str(i_hi),'_1']);
 Trace_cur=eval([hiname_template,num2str(i_hi),'_2']);
-Cur_temp=roundn(mean(Trace_cur(5000:10000,2))*10^12,1);
+Cur_temp=ceil(mean(Trace_cur(5000:10000,2))*10^12/20)*20;
 v_ap=TraceHigh(:,2).*1000;
 if((max(v_ap)>0)&&(Cur_temp>0))
     num_aplevel=num_aplevel+1;
@@ -283,7 +283,7 @@ Trace_cur=eval([hiname_template,num2str(i_hi),'_2']);
 %5000 and 10000ms, round up to eliminate the single digit
 v_ap=TraceHigh(:,2).*1000;
 t_ap=TraceHigh(:,1).*1000;
-Cur(i_hi)=roundn(mean(Trace_cur(5000:10000,2))*10^12,1);
+Cur(i_hi)=ceil(mean(Trace_cur(5000:10000,2))*10^12/20)*20;
 if((max(v_ap)>0)&&(Cur(i_hi)>0))
     pos_ap=pos_ap+1;
     l=length(v_ap);
@@ -579,7 +579,7 @@ min_v=100;
 i_hi=1;
 %seperate the trace we want for AP analysis
 marker_ap=0;
-while (i_hi<N_ap)
+while (i_hi<=N_ap)
 pos_ap=0;
 Cur_ap=zeros(num_aplevel,1);
 Traceap=eval([hiname_template,num2str(i_hi),'_1']);
@@ -596,11 +596,15 @@ if((max(v_ap)>0)&&(Cur_temp>0))
     t_aptemp=t_ap(id_peaktemp(ap_peaktemp));
     if ((num_ptemp>=3)&&(max(diff(t_aptemp))>20))
     marker_ap=1;
-    break
+    if ((num_ptemp==3)&&(min(diff(t_aptemp))<20))
+        marker_ap=0;
+    else
+        break
+    end
     end
 end
 i_hi=i_hi+1;
-end    
+end   
 
 if(marker_ap~=0)
 Trace_cur=eval([hiname_template,num2str(i_hi),'_2']);
@@ -660,14 +664,20 @@ ramp_temp=eval([rheoname_template,'1_2']);
 t_rheo=Trace_temp(:,1)*1000;
 v_rheo=Trace_temp(:,2)*1000;
 i_rheo=ramp_temp(:,2)*10^12;
-if (max(v_rheo)<=0)
-    Trace_temp=eval([rheoname_template,'2_1']);
-    ramp_temp=eval([rheoname_template,'2_2']);
+num_rheo=1;
+marker_rheo=0;
+while (max(v_rheo)<=0)&&(exist([rheoname_template,num2str(num_rheo+1),'_1']))
+    Trace_temp=eval([rheoname_template,num2str(num_rheo+1),'_1']);
+    ramp_temp=eval([rheoname_template,num2str(num_rheo+1),'_2']);
     t_rheo=Trace_temp(:,1)*1000;
     v_rheo=Trace_temp(:,2)*1000;
     i_rheo=ramp_temp(:,2)*10^12;
+    if (max(v_rheo)>0)
+        marker_rheo=1;
+    end
+    num_rheo=num_rheo+1;
 end
-if (max(v_rheo)>0)
+if ((max(v_rheo)>0)||(marker_rheo==1))
     spk_st=find(v_rheo>=0,1);
     v_temp=v_rheo(spk_st:end);
     spk_end=find(v_temp<=0,1)+spk_st+1;

@@ -113,6 +113,15 @@ AP_start(ind_tmp)=[];
 % plot(t_ap(AP_start(:)),v_ap(AP_start(:)),'o')
 % stop
 
+l_tmp=length(AP_start);
+ind_tmp3=[];
+for i=1:l_tmp
+    if((t_ap(AP_start(i))>=2000)||(t_ap(AP_start(i))<=20))
+        ind_tmp3=[i ind_tmp3];
+    end
+end
+AP_start(ind_tmp3)=[];
+
 
 n_AP=length(AP_start);
 vv=0;
