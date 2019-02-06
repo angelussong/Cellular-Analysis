@@ -1,0 +1,8 @@
+Adjustment1: 
+
+Adjusted the conductance for some K+ conductance and CAL P values. 
+
+Result: no firing at +60pA, but firing at 80,130,180 and 230pA injection. 
+
+Problem so far: relatively low firing rate
+		 low baseline (recovering at a lower hyperpolarized Vm)

@@ -1,0 +1,42 @@
+#!/bin/bash
+# runCometJob
+# Script to run a specified job on the Comet cluster.
+# Input parameters: path to job, filename
+# Job needs to be zipped up in a .zip file, with a run.sh file with all of the metaparameters set...
+
+# parameters - 
+# 1) LOADPATH to optimisetraub folder - this is the path AFTER ~/Dropbox/results/ AND /oasis...weaverc/
+
+# verify correct number of parameters
+if [ "$#" -ne 1 ]
+   then
+      echo "Usage: runCometJob.sh LOADPATH"
+      exit
+fi
+
+# Add these in case they aren't active on this profile
+export COMET="weaverc@comet.sdsc.xsede.org"
+export COMETOASIS="weaverc@comet.sdsc.xsede.org:/oasis/projects/nsf/msm110/weaverc"
+
+# LOADPATH needs to have '/' on the end
+
+export LOADPATH="$1"
+export LOCALBASE="/Users/cweaver2/research/Neuron/chdiOPTMZ/CometResults/"
+export COMETBASE="/oasis/projects/nsf/msm110/weaverc/"
+
+# First: change directory and tar up the directory to transfer to Trestles
+cd ${LOCALBASE}${LOADPATH}
+tar czf input.tar.gz --exclude-tag-all=exclude.tag --exclude=WolfOPTMZ_sub1.zip WolfOPTMZ_sub1
+
+# Seconds: make the directory on Comet and transfer the tar file
+ssh $COMET "mkdir -p ${COMETBASE}${LOADPATH}"
+scp input.tar.gz ${COMETOASIS}/${LOADPATH}
+
+# Third: extract the tar file to make the main directory
+ssh $COMET "tar zxf ${COMETBASE}${LOADPATH}input.tar.gz -C $COMETBASE$LOADPATH"
+
+# Fourth: use sbatch to run the job on Comet
+ssh $COMET "cd ${COMETBASE}${LOADPATH}WolfOPTMZ_sub1/ ; sbatch run.sh"
+
+exit 0
+

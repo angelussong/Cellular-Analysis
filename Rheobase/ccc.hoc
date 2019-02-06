@@ -1,0 +1,214 @@
+
+strdef synFilename
+objref synFout,tVec, vs, caVec, iVec
+objref vs0, vd0, vd1, vd2, vd3	// voltages at the connecting ends of each section
+objref sref
+objref camVec, cacVec, catVec		// [ca] in middle shell, core, & total
+objref caB					// buffered Ca in outer shell
+objref aVec, xVec			// for ATPase & exch vec
+objref kdrV, nafV, kahpV, cahvaV
+objref kslowV, kaV, hV, napV, calvaV
+objref canV				// for CAN current
+objref spiketimes
+objref apc				// APcount 
+objref isi, fr
+objref fout
+objref stVec			// vector containing applied current steps
+objref alCAN			// alpha channel opening for CAN
+objref icangraph, ecaV, ipmpV
+
+objref stimV
+
+
+proc set_dataVec() {
+
+      spiketimes = new Vector() 
+	apc = new APCount(0.5)
+	apc.record(spiketimes)
+
+}
+
+proc set_dataVec() {
+
+  spiketimes = new Vector()
+	apc = new APCount(0.5)
+	apc.record(spiketimes)
+  vs = new Vector()  // Voltage at soma
+	tVec = new Vector()  // Vector of time steps
+	tVec.record(&t)
+	vs.record(&soma.v(0.5))
+
+}
+
+proc calcFR() { local k, tmx
+
+    objref isi, fr
+
+    isi = new Vector()
+    fr = new Vector()
+
+    for( k = 0; k < apc.n-1; k = k+1 ) {
+	isi.append(spiketimes.x[k+1]-spiketimes.x[k])
+	fr.append(1000/isi.x[k])
+    }
+
+    if( fr.size == 0 ) {
+    print 0
+    print 0
+    print 0
+    return
+    } 
+    if( fr.size > 2 ) {
+	print fr.mean
+	print fr.stdev
+	print fr.stdev/fr.mean
+    } else { print fr.mean }
+
+
+}
+
+
+
+//New 2019
+//WTD2
+//{set_n_params{set_n_params(3.47,0.0009,0.022,0.04,0.00011,0.03,0.03,3.8e-07,2.1e-07,2.9548e-06,4.2102e-06,1.54e-07,3,0.0066,0.011,0.0002,0.0006) set_params() }
+//WTD1
+//{set_n_params(2.113100791,	0.000387991,	0.00919551,	0.053675855,	0.003795833,	0.0025908,	0.050162575,	4.22248E-06,	3.35853E-07,	8.21588E-06,	2.76878E-05,	6.83353E-07,	2.622372495,	0.037498961,	0.031338025,	0.007346355,	0.003526199) set_params() }
+//HETD1
+//{set_n_params(2.507869392, 0.000900000, 0.015415400, 0.038800000, 0.000095700, 0.030000000, 0.030000000, 0.000000608, 0.000000210, 0.000003127, 0.000004210, 0.000000108, 3.000000000, 0.006600000, 0.011000000, 0.000200000, 0.000600000) set_params() }
+//HETD2
+{set_n_params(2.916127200, 0.000900000, 0.016940000, 0.038800000, 0.000095700, 0.030000000, 0.030000000, 0.000000304, 0.000000210, 0.000003127, 0.000004210, 0.000000108, 3.000000000, 0.006600000, 0.011000000, 0.000200000, 0.000600000) set_params() }
+
+//
+load_file("iclamp.ses")
+
+
+/*****
+IClamp[0].amp=0.03
+sprint(synFilename,"30pA.dat")
+synFout=new File()
+synFout.wopen(synFilename)
+set_dataVec()
+run()
+
+vecsz=tVec.size()
+synFout.vwrite(&vecsz)
+tVec.fwrite(synFout)
+vs.fwrite(synFout)
+synFout.close()
+calcFR()
+*****/
+/*****
+IClamp[0].amp=0.08
+sprint(synFilename,"80pA.dat")
+synFout=new File()
+synFout.wopen(synFilename)
+set_dataVec()
+run()
+
+vecsz=tVec.size()
+synFout.vwrite(&vecsz)
+tVec.fwrite(synFout)
+vs.fwrite(synFout)
+synFout.close()
+calcFR()
+
+IClamp[0].amp=0.13
+sprint(synFilename,"130pA.dat")
+synFout=new File()
+synFout.wopen(synFilename)
+set_dataVec()
+run()
+
+vecsz=tVec.size()
+synFout.vwrite(&vecsz)
+tVec.fwrite(synFout)
+vs.fwrite(synFout)
+synFout.close()
+calcFR()
+
+
+IClamp[0].amp=0.18
+sprint(synFilename,"180pA.dat")
+synFout=new File()
+synFout.wopen(synFilename)
+set_dataVec()
+run()
+
+vecsz=tVec.size()
+synFout.vwrite(&vecsz)
+tVec.fwrite(synFout)
+vs.fwrite(synFout)
+synFout.close()
+calcFR()
+
+IClamp[0].amp=0.23
+sprint(synFilename,"230pA.dat")
+synFout=new File()
+synFout.wopen(synFilename)
+set_dataVec()
+run()
+
+vecsz=tVec.size()
+synFout.vwrite(&vecsz)
+tVec.fwrite(synFout)
+vs.fwrite(synFout)
+synFout.close()
+calcFR()
+
+IClamp[0].amp=0.28
+sprint(synFilename,"280pA.dat")
+synFout=new File()
+synFout.wopen(synFilename)
+set_dataVec()
+run()
+
+vecsz=tVec.size()
+synFout.vwrite(&vecsz)
+tVec.fwrite(synFout)
+vs.fwrite(synFout)
+synFout.close()
+calcFR()
+
+
+
+runStopAt = 500
+tstop=500
+
+IClamp[0].amp=-0.04
+run()
+print v
+IClamp[0].amp=-0.02
+run()
+print v
+IClamp[0].amp=0
+run()
+print v
+IClamp[0].amp=0.02
+run()
+print v
+IClamp[0].amp=0.04
+run()
+print v
+
+*****/
+//Below is how to automate the rheobase trace and store that into the .dat file of the neuron!!!!!
+
+objref strobj
+strobj = new StringFunctions()
+strdef MODELGAI
+strdef MODELGAI2
+//MUST DEFINE THE STROBJ FIRST!!!!!
+MODELGAI=MODEL_FILE
+strobj.right(MODELGAI, 13)
+//remove first n characters n=12 if neuron name is WTD, n=13 if HETD
+//strobj.head(MODELGAI, "_spine.hoc", MODELGAI2)
+//Syntax:
+//strobj.tail(str, "regexp", result)
+//Description:
+//The result contains the head of the string up to but not including the regexp. returns index of last char.
+
+load_file("ramp.ses")
+load_file("automate_rheo.hoc")
+
+

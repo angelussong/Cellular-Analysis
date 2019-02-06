@@ -1,0 +1,101 @@
+// settings.hoc: Controls for setting up the neuron model, simulation and optimization
+
+strdef CELL
+// CELL parameter. This name needs to match up with several other files:
+// file in 'morph'
+// folder in 'ephys', and all of the files in that folder need to begin with this name
+// file in 'setup/errorfunctions/'
+//CELL="msnWTD1_Apr29IR3a"       // note -- Joe G confirmed that Apr29IR3a is actually a D2 cell
+CELL="msnWTD2_May3IR2a"	// note -- Joe G confirmed that May3IR2a (actually named May5IR2a) is actually a D1 cell
+//CELL="msn_wolf"
+//CELL="izh_y"
+//CELL="Dec15IR2e_y"
+
+// MODEL parameter. The level of reduction in the morphology to use
+// 1 == Full morphology
+// 2 == Traub morphology, surface area scaled
+// 3 == Algorithmically reduced morphology, from the full morph, according to Hendrickson et al 2011 (or some other)
+// 4 == Izhikevich Model
+// 5 == MSN model from striatum, based on Wolf et al. (2005) and Evans et al. (2012)
+// 6 == MSN model from striatum having 6 dendrites - like Wolf et al. (2005) but as implemented by Damodaran et al (2014)
+MODEL=6
+
+// AXON parameter. Which model axon to use. Current options:
+// 1 == Yadav axon
+// 2 == Hay axon
+// 3 == Traub axon
+// 4 == Izh Model
+// 5 == no axon
+AXON=2
+
+// CHANNELS parameter. Which model of ion channels to use. Current options:
+// 1 == Traub channels
+// 2 == MSN model from striatum, based on Wolf et al. (2005) and Evans et al. (2012)
+CHANNELS=2 //this setting will detect if you need izh channels instead
+
+// Optimization controls
+// RUN: 0 or 1 to run an optimization as soon as neuron starts
+// MULOBJ: 0 or 1 for multiple objective yes or no
+// NSDE_COMB_FFS: If MULOBJ==1, this will be 0 or 1 for are we combining objectives into fewer objectives, yes or no
+//RUN=0
+//MULOBJ=0
+//NSDE_COMB_FFS=0
+
+// MODE parameter. Which mode to run in. Options are:
+// 0 == Output mode - for saving voltage traces and/or IV/FI curves
+// 1 == Just load the neuron model that has been selected above
+// 2 == Load the neuron model plus the MRF, so that error functions can be used
+// 3 == Run the Differential Evolution
+// 4 == Run the Latin Hypercube Sampling
+MODE = 2
+
+// MULOBJ parameter: 0 = no, use single objective; 1 = yes, use multi-objective (NSDE)
+MULOBJ = 0
+// NSDE_COMB_FFS parameter: 0 = use one objective in the multi-objective mode, 1 = use multiple objectives by combining individual objectives, requires extra setup files to be present...
+NSDE_COMB_FFS = 0
+
+// DE parameters:
+//max_time = 5400 //1.5 hr // 7200 // 2hr 0 min  // max. time to run in seconds 
+//max_time = 223200 // 62 hours on rrox ~= 40 hrs on Comet // max. time to run in seconds 
+//max_time = 14400 // 4 hrs // max. time to run in seconds 
+//max_time = 21600 // 6 hours // max. time to run in seconds 
+//max_time = 256000 // 71.1 hrs, about equal to 20 hrs on Comet // 72000 // 20 hours // max. time to run in seconds 
+//max_time = 7200	//2 hrs - 144000 // 40 hours // max. time to run in seconds 
+max_time = 96000	//20 hrs 
+pop_size = 256 // size of the population - MUST be changed when running the LHS
+LOAD_GENERATION = 0 // Set to 1 when loading an existing output/curr_population file, normally when continuing a DE() run past the first 40 hours
+print "settings.hoc:  LOAD_GENERATION = ",LOAD_GENERATION
+// more DE parameters (terminating by number of generations, crossover rate and differential scale factor) found in setup/de_setup.hoc
+
+
+// USE_IHOLD parameter.  The cortical neurons were held at a certain holding 
+// potential before steps were applied, e.g. -70 mV.  In such situations, 
+// we simulated this as an extra current IHOLD which must be calculated and 
+// applied to the simulation.  The MSN neurons were characterized starting 
+// from rest, so no IHOLD is needed.
+//
+// added by Christina Weaver, Sep 2016.
+USE_IHOLD = 0
+DTSIZE = 0.1
+STEPS_MS = 10
+dt = DTSIZE
+steps_per_ms = STEPS_MS
+
+// duration in ms to initialise the ihold amp
+INITDUR = 1000	// previous, changed 9/6/16 by cmw
+INITDUR = 500	// have a short negative time to achieve equilibrium
+STIMDEL = 215
+
+// Used in DE:
+
+
+// Controls for outputs: used by scripts that analyse the data and make the figures
+// VTRACES: 0 or 1 to just save files for voltage traces of selected parameter sets
+// IVFI: 0 or 1 for saving IV and FI curve information
+VTRACES=0
+IVFI=0
+
+// Flag for debugging - not really set up properly yet...
+DEBUG=0
+
+CVODE=0

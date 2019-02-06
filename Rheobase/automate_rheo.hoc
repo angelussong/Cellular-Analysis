@@ -1,0 +1,28 @@
+
+strdef subFilename
+objref savdata
+objref tv, vv
+objref rs
+
+proc runtest(){
+
+
+sprint(subFilename,"Rheo.dat")
+savdata = new File()
+savdata.wopen(subFilename)
+vv=new Vector()
+tv=new Vector()
+tv.record(&t)
+vv.record(&soma.v(0.5))
+
+
+run()
+
+for i=0,tv.size()-1 {
+    savdata.printf("%g %g\n", tv.x(i), vv.x(i))
+}
+savdata.close()
+
+}   
+
+runtest()

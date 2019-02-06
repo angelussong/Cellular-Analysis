@@ -1,0 +1,137 @@
+load_file("nrngui.hoc")
+
+// Load settings: includes controls for which neuron, dendritic reduction, optimisation method details
+load_file("settings.hoc")
+
+// which directory are we in?
+strdef PARENTDIR
+PARENTDIR = getcwd()
+
+// initialise the parallelContext()
+objref pc
+pc = new ParallelContext()
+
+// Load model:
+// load the file with the methods
+// then call the method that loads up our model according to the settings.hoc contents
+print "before setupMorph"
+load_file("setup/setupMorph.hoc")
+print "after setupMorph"
+print "all secList:"
+forsec all print secname()
+load_model()
+print "after load_model, V0=",V0
+
+// Add passive properties and ion channels to the model
+print "before load_file setupCH"
+{ load_file("setup/setupChannels.hoc") }
+print "done loading setupChannels"
+load_channels()
+print "load_channels finished, g_pas = ", g_pas
+
+// Add a stimulus to the model
+{ load_file("setup/setupStimulus.hoc") }
+setupIClamp()
+
+// load the custom init proc
+//load_file("custominit.hoc")
+
+/***
+// debugging the addition of Evans code.
+IClamp[0].del = 100
+IClamp[0].dur = 500
+IClamp[0].amp = .376
+tstop = 800
+v_init=-87.75
+***/
+if( MODEL == 5 ) { 
+    ncpt = 0
+    geom_nseg() 
+    forall { for(x) ncpt += 1 }
+    printf("After setup:  %d compartments.\n",ncpt)
+}
+
+//xopen("cmw_caPlotTweak.ses")
+//xopen("cmw_currentPlot.ses")
+//xopen("cmw_small6win.ses")
+//xopen("../../shared/hoc/alt_graphs.hoc")
+
+// Now we have the neuron model loaded
+// Following steps are for setting up error functions, DE and LHS runs
+
+if (MODE > 1) {
+    
+	
+	// Boot up the MRF
+    load_file("optmz/mulfit.hoc")
+    load_file("setup/setupMRF.hoc")
+
+    if (MODE == 3) {
+        load_file("setup/de_setup.hoc")
+    }
+    if (MODE == 4) {
+        load_file("setup/lhs_setup.hoc")
+    }
+    
+    if (MODE > 2) {
+        runtime = startsw()
+        if (pc.nhost > 1) {
+            { pc.runworker() }
+        }
+        if (MODE == 4) {
+            LHS()
+        }
+        if (MODE == 3) {
+            if (MULOBJ) {
+                NSDE()
+            } else {
+print "before running DE\n"
+                DE()
+print "after running DE\n"
+            }
+        }
+        printf("run time = %g\n", startsw()-runtime)
+        if (pc.nhost>1) {
+            { pc.done() }
+        }
+        quit()
+    }
+} else if (MODE == 0) {
+    if (VTRACES) {
+        LOAD_GENERATION = 1
+        init_pop()
+        save_voltages()
+    }
+    if (IVFI) {
+        LOAD_GENERATION = 1
+        init_pop()
+        save_iv()
+        save_fi()
+    }
+    quit()
+}
+load_file("ccc.hoc")
+
+//Below is how to automate the rheobase trace and store that into the .dat file of the neuron!!!!!
+/***
+{set_n_params(3.5526529495, 0.0003926929, 0.0038245948, 0.0789485208, 0.0000796449, 0.0031088481, 0.0084088721, 0.0000007424, 0.0000001799, 0.0000002541, 0.0000008426, 0.0000001154, 0.2829563051, 0.0208035766, 0.0071847962, 0.0062194784, 0.0048858170) set_params() } 
+
+objref strobj
+strobj = new StringFunctions()
+strdef MODELGAI
+strdef MODELGAI2
+//MUST DEFINE THE STROBJ FIRST!!!!!
+MODELGAI=MODEL_FILE
+strobj.right(MODELGAI, 13)
+//remove first n characters n=12 if neuron name is WTD, n=13 if HETD
+strobj.head(MODELGAI, "_spine.hoc", MODELGAI2)
+//Syntax:
+//strobj.tail(str, "regexp", result)
+//Description:
+//The result contains the head of the string up to but not including the regexp. returns index of last char.
+
+load_file("ramp.ses")
+load_file("automate_rheo.hoc")
+***/
+
+

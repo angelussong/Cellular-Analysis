@@ -1,0 +1,235 @@
+Script started on Wed 18 Jan 2017 10:37:24 AM EST
+]0;cweaver@redrocks:~/NeuronSims/WTD2_runs/WTD2fx_Ax_sbKn1/WolfOPTMZ[?1034h[cweaver@redrocks WolfOPTMZ]$ nrngui init.hoc
+NEURON -- VERSION 7.5 (1460:3d056dcb8a9d) 2016-09-28
+Duke, Yale, and the BlueBrain Project -- Copyright 1984-2016
+See http://neuron.yale.edu/neuron/credits
+
+loading membrane mechanisms from /home/cweaver/NeuronSims/WTD2_runs/WTD2fx_Ax_sbKn1/WolfOPTMZ/x86_64/.libs/libnrnmech.so
+Additional mechanisms from files
+ optmz/feature_weaver.mod model/AMPA.mod model/bkkca.mod model/cadyn.mod model/caL13.mod model/caldyn.mod model/caL.mod model/can.mod model/caq.mod model/car.mod model/cat.mod model/GABA.mod model/kaf.mod model/kas.mod model/kir.mod model/krp.mod model/naf.mod model/nap.mod model/NMDA.mod model/skkca.mod model/stim.mod model/Voffset.mod model/vsource.mod
+	1 
+settings.hoc:  LOAD_GENERATION = 0 
+	1 
+before setupMorph
+settings.hoc:  LOAD_GENERATION = 0 
+	1 
+MODEL_FILE = morph/msn_wolf_template.hoc
+	1 
+	1 
+after setupMorph
+all secList:
+top of msn_wolf_template.hoc
+before morph_secLists in MSN template
+after morph_secLists in MSN template
+125  compartments
+bottom of msn_wolf_template.hoc
+Initial setup:  192 compartments.
+after load_model, V0=-75 
+before load_file setupCH
+	1 
+before load channel file:
+	1 
+	1 
+	1 
+	16 
+	0 
+	1 
+	1 
+	16 
+	0 
+	1 
+	1 
+	16 
+	0 
+	0 
+	0 
+	1 
+	1 
+	15 
+	0 
+	1 
+	1 
+	15 
+	0 
+	0 
+	1 
+	1 
+	16 
+	0 
+	1 
+	1 
+	16 
+	0 
+	0 
+	1 
+	1 
+	31 
+	0 
+	1 
+	1 
+	31 
+	0 
+	1 
+	1 
+	31 
+	0 
+	0 
+	0 
+	1 
+	1 
+	11 
+	0 
+	1 
+	1 
+	11 
+	0 
+	0 
+	1 
+	1 
+	16 
+	0 
+	1 
+	1 
+	16 
+	0 
+	1 
+	1 
+	16 
+	0 
+	0 
+	0 
+	1 
+	1 
+	6 
+	0 
+	1 
+	1 
+	6 
+	0 
+	0 
+	1 
+done loading setupChannels
+LC:  done set_passive
+LC:  done set_active
+LC:  done setup_parameters
+SP top
+SP:  before axon_init
+SP:  before axon_my
+SP:  after axon_my
+LC:  done set_params
+load_channels finished, g_pas = 1.4446844e-05 
+After setup:  260 compartments.
+	0 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	0 
+	1 
+	1 
+	0 
+Now totalEFs = 1; numEFsInGen[0] = 1
+	37 
+xstr = <msnWTD1_Apr29IR3a/msnWTD1_Apr29IR3a_200ms_0>/n	54 
+	0 
+	1 
+xstr ephys name = </home/cweaver/NeuronSims/WTD2_runs/WTD2fx_Ax_sbKn1/WolfOPTMZ/ephys/msnWTD1_Apr29IR3a/msnWTD1_Apr29IR3a_200ms_0.dat>/n	136 
+	1 
+	0 
+	0 
+	Vector[34] 
+	Vector[35] 
+	0 
+	1 
+	1 
+	0 
+Now totalEFs = 2; numEFsInGen[1] = 1
+	37 
+xstr = <msnWTD1_Apr29IR3a/msnWTD1_Apr29IR3a_200ms_-20>/n	56 
+	0 
+	1 
+xstr ephys name = </home/cweaver/NeuronSims/WTD2_runs/WTD2fx_Ax_sbKn1/WolfOPTMZ/ephys/msnWTD1_Apr29IR3a/msnWTD1_Apr29IR3a_200ms_-20.dat>/n	138 
+	1 
+	0 
+	0 
+	Vector[63] 
+	Vector[64] 
+	0 
+	1 
+	1 
+	0 
+Now totalEFs = 3; numEFsInGen[2] = 1
+	37 
+xstr = <msnWTD1_Apr29IR3a/msnWTD1_Apr29IR3a_200ms_-30>/n	56 
+	0 
+	1 
+xstr ephys name = </home/cweaver/NeuronSims/WTD2_runs/WTD2fx_Ax_sbKn1/WolfOPTMZ/ephys/msnWTD1_Apr29IR3a/msnWTD1_Apr29IR3a_200ms_-30.dat>/n	138 
+	1 
+	0 
+	0 
+	Vector[92] 
+	Vector[93] 
+	0 
+	1 
+	1 
+	0 
+Now totalEFs = 4; numEFsInGen[3] = 1
+	37 
+xstr = <msnWTD1_Apr29IR3a/msnWTD1_Apr29IR3a_2000ms_-170>/n	58 
+/share/apps/neuron/nrn/x86_64/bin/nrniv: EOF in fscan
+ in generatorMould.hoc near line 62
+ }
+  ^
+        File[12].scanvar()
+      xopen("generatorM...")
+    xopen("setupGener...")
+  execute1("{xopen("se...")
+and others
+	0 
+	1 
+	1 
+	0 
+	1.4446844e-05 
+	-70.102593 
+	0.92201185 
+	0.00028154318 
+	1 
+	0 
+	1 
+Number of error functions is 4
+	31 
+	1 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+[?1034hoc>]0;cweaver@redrocks:~/NeuronSims/WTD2_runs/WTD2fx_Ax_sbKn1/WolfOPTMZ[cweaver@redrocks WolfOPTMZ]$ m[Kexit
+
+Script done on Wed 18 Jan 2017 10:37:36 AM EST
